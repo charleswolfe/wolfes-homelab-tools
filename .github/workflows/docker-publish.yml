@@ -56,8 +56,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # ghcr.io shows a multi-arch image's description from the index
+      # annotations, not from labels, so write both.
       - id: meta
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        env:
+          DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
@@ -68,6 +72,11 @@ jobs:
             type=sha
           labels: |
             org.opencontainers.image.title=Homelab Tools
+            org.opencontainers.image.description=Offline, private browser utilities for the homelab, served by static-web-server
+            org.opencontainers.image.licenses=LicenseRef-MIT-Commons-Clause AND GPL-3.0-only
+          annotations: |
+            org.opencontainers.image.title=Homelab Tools
+            org.opencontainers.image.description=Offline, private browser utilities for the homelab, served by static-web-server
             org.opencontainers.image.licenses=LicenseRef-MIT-Commons-Clause AND GPL-3.0-only
 
       - uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
@@ -77,6 +86,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: mode=max

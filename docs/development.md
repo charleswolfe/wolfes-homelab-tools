@@ -34,6 +34,6 @@ To release a version, tag it; the workflow publishes `1.0.0`, `1.0` and `1`:
 git tag v1.0.0 && git push origin v1.0.0
 ```
 
-**After the first publish**, check the package's visibility on GitHub (your profile → **Packages** → `wolfes-homelab-tools` → **Package settings**). A new package can start out private, and pulls then fail with `denied`. Set it to **Public**.
+**After the first publish**, make the package public. GitHub always creates new packages as private, and pulls then fail with `denied`. Go to your profile → **Packages** → `wolfes-homelab-tools` → **Package settings** → **Change visibility** → **Public**. You only need to do this once; public images can be pulled without logging in. The workflow links the package to this repository automatically, so it shows up on the repo page and the workflow keeps permission to push to it.
 
 Dependabot (`.github/dependabot.yml`) opens weekly pull requests when a base image or an action has a new version. Both are pinned to exact digests or commits, so nothing changes without a reviewed PR. The busybox image appears twice in the `Dockerfile`; keep both lines identical.
