@@ -1,0 +1,12 @@
+# Weekly PRs for the digest-pinned base images in the Dockerfile and the
+# SHA-pinned actions in .github/workflows.
+version: 2
+updates:
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

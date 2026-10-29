@@ -18,3 +18,5 @@ or run the container as root (`user: "0:0"` in compose, `--user 0:0` with `docke
 **Redirect goes to the wrong port**: host and container HTTPS ports differ. Use the same number on both sides.
 
 **VIA shows "This tool needs a secure (HTTPS) connection"**: you're on plain HTTP. Set up one of the [HTTPS options](https.md), or browse from the Docker host via `localhost`.
+
+**`docker pull` fails with `denied` or `unauthorized`**: the package on GitHub is still private, or the workflow hasn't published it yet. See [CI and publishing the image](development.md#ci-and-publishing-the-image).

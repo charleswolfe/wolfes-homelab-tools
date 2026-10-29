@@ -16,6 +16,13 @@
 
 Every response carries a same-origin Content-Security-Policy, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `X-Frame-Options: SAMEORIGIN` and a restrictive `Permissions-Policy`.
 
+## Image security
+
+- Runs as an unprivileged user (uid/gid `10001`) in a `scratch` image: no package manager and no libraries, just static-web-server and busybox.
+- busybox provides only the 10 commands the startup script and health check use (`sh`, `cat`, `find`, `grep`, `id`, `ls`, `nc`, `sed`, `tr`, `wget`).
+- The site files belong to root and are read-only to the server. The only exceptions are `sitemap.xml` and `robots.txt`, so `SITE_URL` can rewrite them at startup.
+- Base images are pinned by digest. Published images come with an SBOM and build provenance.
+
 ## Memory and caching
 
 The build measures every file the server can send (originals plus `.br`/`.gz`) and reserves that much memory for caching: 100% of the site, capped at 50 MB. It adds a 16 MiB server baseline and rounds up, which gives the recommended limit (currently **56m**). At startup the container reads every file once so the kernel page cache holds the whole site in RAM, and it logs a warning if the container's memory limit is lower than recommended.

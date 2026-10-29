@@ -19,3 +19,21 @@ npm run build    # production build into dist/
 - **VIA's look** comes from `site/via/skin.css`, which maps VIA's colour variables onto the site tokens (`site/assets/tokens.css`) and styles the header bar. Edit it freely; no rebuild needed. The header markup is written into `site/via/app/index.html` by `node scripts/via/inject.mjs site/via/app/index.html`, which is safe to re-run.
 
 Run `npm test` before building an image or committing: the Docker build doesn’t run it. It covers the tool logic and the offline guard, which fails if any file references an outside host or contains known tracker code.
+
+## CI and publishing the image
+
+`.github/workflows/docker-publish.yml` runs on every push and pull request:
+
+1. `npm test`.
+2. Builds the image for `linux/amd64`, `linux/arm64` and `linux/arm/v7`, using the GitHub Actions build cache.
+3. On `main` and on version tags only, pushes it to `ghcr.io/charleswolfe/wolfes-homelab-tools` with an SBOM and build provenance. Pull requests build but never publish.
+
+To release a version, tag it; the workflow publishes `1.0.0`, `1.0` and `1`:
+
+```sh
+git tag v1.0.0 && git push origin v1.0.0
+```
+
+**After the first publish**, check the package's visibility on GitHub (your profile → **Packages** → `wolfes-homelab-tools` → **Package settings**). A new package can start out private, and pulls then fail with `denied`. Set it to **Public**.
+
+Dependabot (`.github/dependabot.yml`) opens weekly pull requests when a base image or an action has a new version. Both are pinned to exact digests or commits, so nothing changes without a reviewed PR. The busybox image appears twice in the `Dockerfile`; keep both lines identical.

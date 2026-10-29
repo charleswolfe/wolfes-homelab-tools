@@ -7,7 +7,7 @@ Some tools need a secure page:
 | VIA Keyboard Configurator | **Does not work.** Browsers only expose WebHID (keyboard access) on HTTPS, and only in Chromium-based browsers (Chrome, Edge, Brave, Opera). All 3,348 keyboard definitions are bundled, so it works with no internet access. |
 | Bitcoin Paper Wallet | Works, but not recommended: anyone on the network path could alter the page before it generates keys. |
 
-`localhost` counts as secure, so these tools also work when you browse on the Docker host itself.
+Browsers treat `localhost` as secure, so both tools also work over plain HTTP when you browse on the Docker host itself. The pages still show a banner there, because other devices won't get that exception.
 
 There are three ways to get HTTPS. Options 1 and 2 use the container's built-in TLS; option 3 keeps the container on plain HTTP behind a proxy you already run.
 
@@ -23,17 +23,17 @@ docker run -d --name homelab-tools --restart unless-stopped \
   -e TLS_KEY_FILE=/certs/privkey.pem \
   -e HTTPS_PORT=443 -e HTTP_PORT=80 \
   -e HOSTNAMES=tools.lan,192.168.1.20 \
-  homelab-tools
+  ghcr.io/charleswolfe/wolfes-homelab-tools:latest
 ```
 
-- `HOSTNAMES` lists every name or IP people type to reach the site. Plain-HTTP requests to those names are redirected to `https://<first name>`, and requests for any other name get `400 Bad Request`. Leave it unset to serve HTTPS only.
+- `HOSTNAMES` lists every name or IP people use to reach the site. Plain-HTTP requests to those names are redirected to `https://<first name>`, and requests for any other name get `400 Bad Request`. Leave it unset to serve HTTPS only.
 - **Map the same port on both sides** (`443:443`, or `8443:8443` with `HTTPS_PORT=8443`). Redirects point at the container's HTTPS port, so it must be the port browsers use. Ports below 1024 work without root on Docker 20.10+.
 - The container runs as uid/gid `10001`, so the key must be readable by it. See [Troubleshooting](troubleshooting.md#key-not-readable).
-- After renewing a certificate, restart the container: `docker restart homelab-tools`.
+- The certificate is read at startup. After renewing it, restart the container: `docker restart homelab-tools`.
 
 ## Option 2: Docker Compose secrets
 
-Same files, but Docker mounts them under `/run/secrets/` and they never appear in environment variables or `docker inspect`. Point the same two variables at the secret paths:
+The same two files, declared as Compose secrets. Compose mounts them read-only under `/run/secrets/`, apart from your other volumes, which keeps key handling in one place in the compose file. The file permissions rule from option 1 still applies. Point the two variables at the secret paths:
 
 ```yaml
 secrets:
@@ -44,7 +44,7 @@ secrets:
 
 services:
   homelab-tools:
-    image: homelab-tools
+    image: ghcr.io/charleswolfe/wolfes-homelab-tools:latest
     secrets: [tls_cert, tls_key]
     environment:
       TLS_CERT_FILE: /run/secrets/tls_cert

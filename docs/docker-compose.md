@@ -1,19 +1,19 @@
 # Docker Compose
 
-There's no compose file in this repo; copy whichever of these fits into your own `compose.yaml`.
+There's no compose file in this repo. Copy whichever of these fits into your own `compose.yaml`. To get a certificate as well, see the complete example in [Certificates with step-ca](step-ca.md).
 
 **Plain HTTP / behind a reverse proxy (option 3):**
 
 ```yaml
 services:
   homelab-tools:
-    image: homelab-tools
+    image: ghcr.io/charleswolfe/wolfes-homelab-tools:latest
     container_name: homelab-tools
     restart: unless-stopped
     ports:
       - "8080:8080"
     mem_limit: 56m
-    read_only: true            # optional; the image needs no writable paths
+    read_only: true            # optional; only disables the SITE_URL sitemap rewrite
 ```
 
 **Built-in HTTPS with mounted files (option 1):**
@@ -21,7 +21,7 @@ services:
 ```yaml
 services:
   homelab-tools:
-    image: homelab-tools
+    image: ghcr.io/charleswolfe/wolfes-homelab-tools:latest
     container_name: homelab-tools
     restart: unless-stopped
     ports:
@@ -51,7 +51,7 @@ secrets:
 
 services:
   homelab-tools:
-    image: homelab-tools
+    image: ghcr.io/charleswolfe/wolfes-homelab-tools:latest
     container_name: homelab-tools
     restart: unless-stopped
     ports:
@@ -67,4 +67,4 @@ services:
     mem_limit: 56m
 ```
 
-Then `docker compose up -d`, and `docker compose logs homelab-tools` to see the startup summary. If you'd rather have Compose build the image, replace `image: homelab-tools` with `build: /path/to/wolfes-homelab-tools`.
+Then `docker compose up -d`, and `docker compose logs homelab-tools` to see the startup summary. To build from source instead of pulling, replace the `image:` line with `build: /path/to/wolfes-homelab-tools`.

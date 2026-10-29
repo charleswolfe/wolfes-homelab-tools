@@ -93,7 +93,7 @@ services:
         echo "Issued $$CERT_NAME ($$CERT_SANS), valid one year. Restart homelab-tools to load it."
 
   homelab-tools:
-    image: homelab-tools
+    image: ghcr.io/charleswolfe/wolfes-homelab-tools:latest
     container_name: homelab-tools
     restart: unless-stopped
     depends_on:

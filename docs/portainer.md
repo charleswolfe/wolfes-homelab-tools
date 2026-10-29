@@ -1,6 +1,6 @@
 # Portainer
 
-First make the image available on the Docker host: build it there with `docker build -t homelab-tools .`, or import `homelab-tools.tar.gz` under **Images → Import** (see [Hosts without internet access](install.md#hosts-without-internet-access)).
+If the Docker host has internet access, Portainer pulls the published image itself. Otherwise import it first under **Images → Import** (see [Hosts without internet access](install.md#hosts-without-internet-access)).
 
 ## As a stack (recommended; supports all three options)
 
@@ -16,7 +16,7 @@ First make the image available on the Docker host: build it there with `docker b
 
 | Field | Value |
 |---|---|
-| Image | `homelab-tools` (turn off "Always pull the image", since it's local) |
+| Image | `ghcr.io/charleswolfe/wolfes-homelab-tools:latest` (turn off "Always pull the image" on an offline host) |
 | Network ports | host `8080` → container `8080`; for HTTPS use `443` → `443` and `80` → `80` |
 | Volumes (HTTPS) | **Bind**, host `/opt/homelab-tools/certs` → container `/certs`, **Read-only** |
 | Env (HTTPS) | `TLS_CERT_FILE=/certs/fullchain.pem`, `TLS_KEY_FILE=/certs/privkey.pem`, `HTTPS_PORT=443`, `HTTP_PORT=80`, `HOSTNAMES=tools.lan,192.168.1.20` |

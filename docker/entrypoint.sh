@@ -113,8 +113,11 @@ fi
 # Absolute URLs in sitemap.xml / robots.txt.
 if [ -n "$SITE_URL" ] && [ "$SITE_URL" != "$BUILD_SITE_URL" ]; then
   url="${SITE_URL%/}"
-  # busybox's [ -w ] ignores read-only mounts, so just try the write.
-  if sed -i "s#${BUILD_SITE_URL}#${url}#g" "$ROOT/sitemap.xml" "$ROOT/robots.txt" 2>/dev/null; then
+  # Rewritten in place: only these two files are writable (the directory
+  # isn't, so no sed -i). busybox's [ -w ] ignores read-only mounts, so just
+  # try the write.
+  rewrite() { content="$(sed "s#${BUILD_SITE_URL}#${url}#g" "$1")" && printf '%s\n' "$content" 2>/dev/null > "$1"; }
+  if rewrite "$ROOT/sitemap.xml" 2>/dev/null && rewrite "$ROOT/robots.txt" 2>/dev/null; then
     BUILD_SITE_URL="$url"
   else
     warn "SITE_URL is set but $ROOT is read-only; sitemap.xml keeps ${BUILD_SITE_URL}."
