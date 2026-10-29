@@ -28,11 +28,23 @@ Run `npm test` before building an image or committing: the Docker build doesn’
 2. Builds the image for `linux/amd64`, `linux/arm64` and `linux/arm/v7`, using the GitHub Actions build cache.
 3. On `main` and on version tags only, pushes it to `ghcr.io/charleswolfe/wolfes-homelab-tools` with an SBOM and build provenance. Pull requests build but never publish.
 
-To release a version, tag it; the workflow publishes `1.0.0`, `1.0` and `1`:
+### Releasing a version
 
-```sh
-git tag v1.0.0 && git push origin v1.0.0
-```
+1. Set `"version"` in `package.json` (for example `1.1.0`) and add a matching `## [1.1.0] - YYYY-MM-DD` section to the top of `CHANGELOG.md`. `npm test` fails if the two don't match.
+2. Commit, then tag that commit and push the tag:
+
+   ```sh
+   git tag -a v1.1.0 -m "v1.1.0"
+   git push origin main v1.1.0
+   ```
+
+The workflow then:
+
+1. runs the tests, and stops if the tag doesn't match `package.json` or the changelog has no section for it;
+2. publishes the image as `1.1.0`, `1.1` and `1`;
+3. creates a GitHub release named `v1.1.0`, using that version's changelog section as the notes, plus the `docker pull` command.
+
+`latest` follows `main`, not tags.
 
 **After the first publish**, make the package public. GitHub always creates new packages as private, and pulls then fail with `denied`. Go to your profile → **Packages** → `wolfes-homelab-tools` → **Package settings** → **Change visibility** → **Public**. You only need to do this once; public images can be pulled without logging in. The workflow links the package to this repository automatically, so it shows up on the repo page and the workflow keeps permission to push to it.
 

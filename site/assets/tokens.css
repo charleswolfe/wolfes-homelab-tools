@@ -34,6 +34,7 @@
   --cat-generate: #1f6f5c;  --cat-generate-soft: #dbeee7;
   --cat-convert: #3654b0;   --cat-convert-soft: #e2e8fa;
   --cat-inspect: #9c5600;   --cat-inspect-soft: #faebd3;
+  --cat-network: #a8323f;   --cat-network-soft: #f9e2e4;
   --cat-hardware: #86399c;  --cat-hardware-soft: #f2e3f6;
 
   --shadow-sm: 0 1px 2px rgb(27 26 23 / 0.06);
@@ -79,7 +80,8 @@
     --cat-generate: #5cc8a8;  --cat-generate-soft: #163a30;
     --cat-convert: #8fa7f6;   --cat-convert-soft: #1c2546;
     --cat-inspect: #f0a948;   --cat-inspect-soft: #3a2a10;
-    --cat-hardware: #d290e5;  --cat-hardware-soft: #33193b;
+    --cat-network: #f08b96;   --cat-network-soft: #3d1a1f;
+  --cat-hardware: #d290e5;  --cat-hardware-soft: #33193b;
     --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
     --shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 8px 24px -10px rgb(0 0 0 / 0.5);
     --shadow-lg: 0 2px 6px rgb(0 0 0 / 0.35), 0 28px 64px -16px rgb(0 0 0 / 0.7);
@@ -112,6 +114,7 @@
   --cat-generate: #5cc8a8;  --cat-generate-soft: #163a30;
   --cat-convert: #8fa7f6;   --cat-convert-soft: #1c2546;
   --cat-inspect: #f0a948;   --cat-inspect-soft: #3a2a10;
+  --cat-network: #f08b96;   --cat-network-soft: #3d1a1f;
   --cat-hardware: #d290e5;  --cat-hardware-soft: #33193b;
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
   --shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 8px 24px -10px rgb(0 0 0 / 0.5);

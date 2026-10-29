@@ -40,7 +40,8 @@ export const COMMON_HEADERS = {
 export const HSTS_ON = 'max-age=31536000';
 export const HSTS_OFF = 'max-age=0';
 
-// Stricter policy for pages that handle secrets (the Bitcoin paper wallet):
+// Stricter policy for pages that handle secrets (the Bitcoin paper wallet,
+// the password generator):
 // no network access at all, not even to this server, and no workers/frames.
 // Browsers enforce both this <meta> policy and the server header, so the
 // stricter directive wins.
@@ -50,7 +51,7 @@ export const STRICT_CSP = CSP
   .replace("frame-src 'self'", "frame-src 'none'");
 
 // Pages that must use STRICT_CSP (paths relative to site/).
-export const STRICT_PAGES = ['bitcoin-wallet/index.html'];
+export const STRICT_PAGES = ['bitcoin-wallet/index.html', 'password/index.html'];
 
 // The vendored VIA app (site/via/app/). Still same-origin only, with the
 // relaxations it can't run without:

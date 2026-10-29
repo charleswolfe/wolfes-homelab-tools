@@ -2,7 +2,8 @@
 # GitHub Container Registry as ghcr.io/<owner>/wolfes-homelab-tools.
 #
 #   push to main      → :latest and :sha-<commit>
-#   tag v1.2.3        → :1.2.3, :1.2 and :1
+#   tag v1.2.3        → :1.2.3, :1.2 and :1, then a GitHub release whose notes
+#                       are that version's section of CHANGELOG.md
 #   pull request      → test and build only, nothing is published
 #
 # Actions are pinned to commit SHAs (the tag is in the comment); Dependabot
@@ -34,6 +35,16 @@ jobs:
         with:
           node-version: 24
       - run: npm test
+      # A release tag must match package.json and have a CHANGELOG.md entry,
+      # so a mistyped tag fails here, before anything is published.
+      - if: startsWith(github.ref, 'refs/tags/v')
+        name: Check release version
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          [ "v$version" = "$TAG" ] || { echo "::error::Tag $TAG doesn't match package.json version $version"; exit 1; }
+          grep -q "^## \[$version\]" CHANGELOG.md || { echo "::error::CHANGELOG.md has no '## [$version]' section"; exit 1; }
 
   image:
     needs: test
@@ -91,3 +102,24 @@ jobs:
           cache-to: type=gha,mode=max
           provenance: mode=max
           sbom: true
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # create the GitHub release
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Create the GitHub release from CHANGELOG.md
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          version="${TAG#v}"
+          awk -v v="$version" 'index($0, "## [" v "]") == 1 { on = 1; next } on && /^## \[/ { exit } on' CHANGELOG.md > notes.md
+          # shellcheck disable=SC2016 # the backticks are Markdown, not a command
+          printf '\n**Docker image:** `docker pull ghcr.io/%s:%s`\n' "${GITHUB_REPOSITORY,,}" "$version" >> notes.md
+          gh release create "$TAG" --title "$TAG" --notes-file notes.md --verify-tag

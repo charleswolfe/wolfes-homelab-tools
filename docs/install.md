@@ -33,11 +33,11 @@ The build pre-compresses the site and prints its size and the recommended memory
 
 ```
 homelab-tools build
-  pages in sitemap     14 (http://localhost:8080)
-  files served         6914
-  JS + HTML            3.47 MiB
-  all served files     33.21 MiB (incl. .br/.gz; brotli saved 24.52 MiB)
-  memory-cache budget  33.21 MiB (100% of assets, capped at 50.00 MiB)
+  pages in sitemap     16 (http://localhost:8080)
+  files served         6936
+  JS + HTML            3.59 MiB
+  all served files     33.41 MiB (incl. .br/.gz; brotli saved 24.60 MiB)
+  memory-cache budget  33.41 MiB (100% of assets, capped at 50.00 MiB)
   recommended limit    56m  (server baseline + cache budget)
 ```
 

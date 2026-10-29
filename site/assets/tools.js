@@ -30,6 +30,13 @@ export const categories = [
     blurb: 'Check, format and pick apart structured data.',
   },
   {
+    id: 'network',
+    name: 'Network',
+    short: 'Network',
+    icon: 'globe',
+    blurb: 'Plan address ranges and pick apart network settings.',
+  },
+  {
     id: 'hardware',
     name: 'Hardware & Crypto',
     short: 'Hardware',
@@ -47,6 +54,16 @@ export const tools = [
     name: 'QR Code Generator',
     summary: 'URLs, Wi-Fi, vCards and more, with custom colors and a center logo.',
     keywords: ['qr', 'barcode', 'wifi', 'vcard', 'logo', 'url', 'sms', 'email'],
+  },
+  {
+    id: 'password', path: '/password/', category: 'generate', icon: 'lock', ready: true,
+    name: 'Password Generator',
+    summary: 'Strong passwords and memorable passphrases, with their strength in bits.',
+    keywords: ['password', 'passphrase', 'diceware', 'random', 'generator', 'secret', 'entropy', 'pin', 'eff'],
+    https: {
+      level: 'recommended',
+      reason: 'Over plain HTTP, anyone between you and this server could alter the page and see or choose the passwords it generates.',
+    },
   },
   {
     id: 'uuid', path: '/uuid/', category: 'generate', icon: 'id', ready: true,
@@ -107,6 +124,12 @@ export const tools = [
     name: 'Regex Tester',
     summary: 'Live matches, capture groups and replace preview.',
     keywords: ['regex', 'regexp', 'regular expression', 'match', 'replace', 'pattern'],
+  },
+  {
+    id: 'subnet', path: '/subnet/', category: 'network', icon: 'subnet', ready: true,
+    name: 'IP Subnet Calculator',
+    summary: 'IPv4 and IPv6 CIDR ranges, netmasks, usable hosts and subnet splitting.',
+    keywords: ['ip', 'subnet', 'cidr', 'netmask', 'mask', 'ipv4', 'ipv6', 'network', 'wildcard', 'broadcast', 'prefix', 'vlan', 'range'],
   },
   {
     id: 'bitcoin-wallet', path: '/bitcoin-wallet/', category: 'hardware', icon: 'wallet', ready: true,

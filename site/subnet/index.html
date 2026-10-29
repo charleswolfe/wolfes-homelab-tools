@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>IP Subnet Calculator · Homelab Tools</title>
+  <meta name="description" content="IPv4 and IPv6 subnet calculator: network and broadcast addresses, netmask, wildcard, usable host range, subnet splitting, address membership and reverse DNS zones.">
+  <meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/theme.css">
+  <script src="/assets/theme-init.js"></script>
+  <script type="module" src="/assets/shell.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body data-tool="subnet">
+  <header data-shell-header></header>
+
+  <main class="page container">
+    <nav class="crumbs" aria-label="Breadcrumb" data-crumbs></nav>
+    <div class="tool-head">
+      <span data-tool-icon></span>
+      <div>
+        <h1>IP Subnet Calculator</h1>
+        <p class="lede">Enter an IPv4 or IPv6 address with a prefix or netmask to see its range, usable hosts and masks, split it into smaller subnets, or check which addresses it contains.</p>
+      </div>
+    </div>
+
+    <div class="sections">
+      <section class="panel">
+        <div class="panel-body stack">
+          <label class="visually-hidden" for="input">Address and prefix</label>
+          <input class="input input-mono input-lg w-full" id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+            placeholder="192.168.1.0/24, 10.0.0.5 255.255.252.0, or fd00:1234::/48">
+          <div class="range">
+            <label class="hint" for="prefix">Prefix</label>
+            <input type="range" id="prefix" min="0" max="32" step="1">
+            <output id="prefix-out" for="prefix"></output>
+          </div>
+        </div>
+        <div class="panel-body messages" id="messages"></div>
+        <div id="result" hidden>
+          <div class="subnet-summary">
+            <div>
+              <div class="subnet-cidr" id="summary-cidr"></div>
+              <div class="hint" id="summary-hosts"></div>
+            </div>
+            <span class="badge subnet-type" id="summary-type"></span>
+          </div>
+          <div class="rows" id="rows"></div>
+          <div class="panel-body">
+            <div class="bits" id="bits" aria-label="Binary view: network bits are highlighted"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="split-panel" hidden>
+        <div class="panel-head">
+          <h2>Split into subnets</h2>
+          <label class="inline-field">Into
+            <select class="select" id="split-prefix"></select>
+          </label>
+          <button class="btn" type="button" id="split-copy"><span data-icon="copy"></span>Copy list</button>
+        </div>
+        <div class="panel-body"><span class="hint" id="split-summary"></span></div>
+        <div class="table-wrap">
+          <table class="table nowrap">
+            <thead><tr id="split-head"></tr></thead>
+            <tbody id="split-rows"></tbody>
+          </table>
+        </div>
+        <div class="panel-body" id="split-more" hidden><span class="hint" id="split-more-text"></span></div>
+      </section>
+
+      <section class="panel" id="check-panel" hidden>
+        <div class="panel-head">
+          <h2>Is it in this network?</h2>
+        </div>
+        <div class="panel-body">
+          <label class="visually-hidden" for="check">Addresses or ranges to check</label>
+          <input class="input input-mono w-full" id="check" spellcheck="false" autocomplete="off" autocapitalize="off"
+            placeholder="Addresses or ranges, separated by spaces or commas: 192.168.1.77, 192.168.2.0/24">
+        </div>
+        <div class="rows" id="check-rows"></div>
+      </section>
+
+      <section class="panel">
+        <details class="cheatsheet" id="ref4">
+          <summary><span data-icon="chevronRight"></span>IPv4 prefix reference</summary>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>Prefix</th><th>Netmask</th><th>Wildcard</th><th>Addresses</th><th>Usable hosts</th></tr></thead>
+              <tbody id="ref4-rows"></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="cheatsheet" id="ref6">
+          <summary><span data-icon="chevronRight"></span>IPv6 common prefixes</summary>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>Prefix</th><th>Typical use</th><th>/64 networks</th></tr></thead>
+              <tbody id="ref6-rows"></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+    </div>
+  </main>
+
+  <footer data-shell-footer></footer>
+</body>
+</html>

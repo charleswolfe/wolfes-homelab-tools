@@ -6,23 +6,24 @@
 docker pull ghcr.io/charleswolfe/wolfes-homelab-tools:latest
 ```
 
-Free, open-source browser utilities for homelab and self-hosting: a QR code generator, a Bitcoin paper wallet, a JSON formatter and validator, the VIA keyboard configurator, and more. Everything is static HTML and JavaScript that runs in your browser.
+Free, open-source browser utilities for homelab and self-hosting: a QR code generator, a password generator, an IP subnet calculator, a Bitcoin paper wallet, a JSON formatter and validator, the VIA keyboard configurator, and more. Everything is static HTML and JavaScript that runs in your browser.
 
 - **Private and offline.** Pages never contact another host: no CDNs, web fonts, analytics or trackers. A same-origin Content-Security-Policy enforces this, and the test suite fails if anything slips in.
 - **Small.** One `scratch`-based image of about 13 MB, served by [static-web-server](https://static-web-server.net) as a non-root user, with every file pre-compressed and held in memory.
 
 | Category | Tools |
 |---|---|
-| Generate | QR Code · UUID · Hash (SHA-256/384/512, MD5) |
+| Generate | QR Code · Password & Passphrase · UUID · Hash (SHA-256/384/512, MD5) |
 | Convert | Base64 · URL Encode/Decode · Case & Slugify · JSON ↔ YAML · Timestamp |
 | Inspect & Validate | JSON Formatter · JWT Decoder · Regex Tester |
+| Network | IP Subnet Calculator (IPv4 and IPv6) |
 | Hardware & Crypto | Bitcoin Paper Wallet · VIA Keyboard Configurator |
 
 ## Screenshots
 
-![The Homelab Tools home page, with tools grouped into Generate, Convert, Inspect & Validate, and Hardware & Crypto](docs/screenshots/index.png)
+![The Homelab Tools home page, with tools grouped into Generate, Convert, Inspect & Validate, Network, and Hardware & Crypto](docs/screenshots/index.png)
 
-*The home page: every tool grouped into four categories, with a filter box. ⌘K / Ctrl K opens search from any page.*
+*The home page: every tool grouped into five categories, with a filter box. ⌘K / Ctrl K opens search from any page.*
 
 ![The QR Code Generator turning a GitHub URL into a green QR code with rounded modules](docs/screenshots/qr-code.png)
 

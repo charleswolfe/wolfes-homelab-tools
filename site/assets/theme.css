@@ -13,6 +13,7 @@
 .cat-generate { --cat: var(--cat-generate); --cat-soft: var(--cat-generate-soft); }
 .cat-convert  { --cat: var(--cat-convert);  --cat-soft: var(--cat-convert-soft); }
 .cat-inspect  { --cat: var(--cat-inspect);  --cat-soft: var(--cat-inspect-soft); }
+.cat-network  { --cat: var(--cat-network);  --cat-soft: var(--cat-network-soft); }
 .cat-hardware { --cat: var(--cat-hardware); --cat-soft: var(--cat-hardware-soft); }
 
 /* ---------- base ---------- */
@@ -1162,3 +1163,53 @@ details.payload pre {
 a.btn { text-decoration: none; }
 .btn-outline { background: var(--surface); color: var(--text); border-color: var(--border-strong); }
 .bullets { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: var(--text-2); }
+
+/* ---------- subnet calculator ---------- */
+
+.subnet-summary { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding: 14px 16px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--cat-network-soft); }
+.subnet-cidr { font: 600 clamp(20px, 3.6vw, 26px)/1.15 var(--mono); letter-spacing: -0.02em; color: var(--text); overflow-wrap: anywhere; }
+.subnet-summary .hint { margin-top: 4px; color: var(--text-2); overflow-wrap: anywhere; }
+.subnet-type { background: var(--surface); color: var(--cat-network); border-color: transparent; font-size: 12px; padding: 3px 10px; }
+.bits { display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+.bits-row { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 12px; align-items: baseline; }
+.bits-label { color: var(--muted); font-size: 12.5px; }
+.bits code { font: 13px/1.6 var(--mono); letter-spacing: 0.02em; overflow-wrap: anywhere; }
+.b-net { color: var(--cat-network); font-weight: 650; }
+.b-host { color: var(--muted); }
+.b-sep { color: var(--muted); padding: 0 1px; }
+.bits-legend { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-top: 4px; padding-left: 82px; font-size: 12px; color: var(--muted); }
+.bits-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.bits-legend i { width: 10px; height: 10px; border-radius: 3px; }
+.b-net-swatch { background: var(--cat-network); }
+.b-host-swatch { background: var(--border-strong); }
+#check-rows .kv-label { flex-wrap: wrap; min-width: 0; font-family: var(--mono); font-weight: 500; word-break: break-all; }
+.table tr.is-current td { background: var(--cat-network-soft); }
+.table td.is-plain { font-family: var(--font); }
+.table.nowrap td { white-space: nowrap; overflow-wrap: normal; }
+.table button.link { padding: 0; border: 0; background: none; font: inherit; color: var(--accent); cursor: pointer; }
+.table button.link:disabled { color: inherit; cursor: default; }
+@media (max-width: 600px) {
+  .bits-row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .bits-legend { padding-left: 0; }
+}
+
+/* ---------- password generator ---------- */
+
+.pw-range-label { min-width: 52px; }
+.pw-symbols { width: 190px; }
+.pw-strength { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 12px 16px; border-top: 1px solid var(--border); }
+.pw-meter { flex: 1 1 200px; height: 8px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
+.pw-meter span { display: block; height: 100%; border-radius: inherit; background: var(--pw-level, var(--ok)); transition: width 0.2s; }
+.pw-strength-text { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font-size: 13.5px; }
+.pw-strength-text strong { color: var(--pw-level, var(--ok)); }
+.pw-strength[data-level="weak"] { --pw-level: var(--danger); }
+.pw-strength[data-level="fair"] { --pw-level: var(--warn); }
+.pw-strength[data-level="strong"], .pw-strength[data-level="very-strong"] { --pw-level: var(--ok); }
+.pw-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border); }
+.pw-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-bottom: 1px solid var(--border); }
+.pw-item:first-child .pw-text { font-size: 17px; }
+.pw-text { flex: 1; min-width: 0; font: 15px/1.5 var(--mono); letter-spacing: 0.02em; overflow-wrap: anywhere; color: var(--text); }
+.pw-d { color: var(--cat-convert); }
+.pw-s { color: var(--cat-inspect); }
+.pw-sep { color: var(--muted); }
+.pw-notes p { margin: 0; font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
