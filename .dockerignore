@@ -8,3 +8,5 @@ scripts/via/
 !site/
 !docker/
 **/.DS_Store
+# Also excluded by the * above; listed so it stays out if the allowlist changes.
+.agent/

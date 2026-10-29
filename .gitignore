@@ -2,3 +2,5 @@ node_modules/
 dist/
 .DS_Store
 
+# Agent working notes (plan, backlog); local only.
+.agent/

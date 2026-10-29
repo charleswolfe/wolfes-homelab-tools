@@ -18,6 +18,24 @@ Free, open-source browser utilities for homelab and self-hosting: a QR code gene
 | Inspect & Validate | JSON Formatter · JWT Decoder · Regex Tester |
 | Hardware & Crypto | Bitcoin Paper Wallet · VIA Keyboard Configurator |
 
+## Screenshots
+
+![The Homelab Tools home page, with tools grouped into Generate, Convert, Inspect & Validate, and Hardware & Crypto](docs/screenshots/index.png)
+
+*The home page: every tool grouped into four categories, with a filter box. ⌘K / Ctrl K opens search from any page.*
+
+![The QR Code Generator turning a GitHub URL into a green QR code with rounded modules](docs/screenshots/qr-code.png)
+
+*QR Code Generator: a URL drawn with rounded modules in a custom colour. The scan check confirms the code still decodes before you download it as PNG or SVG.*
+
+![The JSON Formatter in dark mode, pretty-printing a minified compose-style JSON object](docs/screenshots/json-formatter.png)
+
+*JSON Formatter, in dark mode: minified JSON pretty-printed and validated, with key, container and size counts below.*
+
+![The Regex Tester highlighting three email addresses, with named groups and a replace preview](docs/screenshots/regex-tester.png)
+
+*Regex Tester: matches highlighted as you type, each match broken into its named groups (`user`, `domain`), and a live preview of the replacement `$<user> at $<domain>`.*
+
 ## Quick start
 
 ```sh
