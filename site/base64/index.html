@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Base64 Encode / Decode · Homelab Tools</title>
+  <meta name="description" content="Encode and decode Base64 for text or files, with URL-safe and data URI options. Runs entirely in your browser.">
+  <meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/theme.css">
+  <script src="/assets/theme-init.js"></script>
+  <script type="module" src="/assets/shell.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body data-tool="base64">
+  <header data-shell-header></header>
+
+  <main class="page container">
+    <nav class="crumbs" aria-label="Breadcrumb" data-crumbs></nav>
+    <div class="tool-head">
+      <span data-tool-icon></span>
+      <div>
+        <h1>Base64 Encode / Decode</h1>
+        <p class="lede">Convert text or files to Base64 and back. Decoding accepts standard or URL-safe input, with or without padding.</p>
+      </div>
+    </div>
+
+    <section class="panel">
+      <div class="panel-bar">
+        <div class="segmented" role="radiogroup" aria-label="Mode">
+          <label><input type="radio" name="mode" value="encode" checked><span>Encode</span></label>
+          <label><input type="radio" name="mode" value="decode"><span>Decode</span></label>
+        </div>
+        <div class="options" id="encode-options">
+          <label class="switch"><input type="checkbox" id="opt-urlsafe" role="switch"><span class="switch-track"></span><span>URL-safe</span></label>
+          <label class="switch"><input type="checkbox" id="opt-nopad" role="switch"><span class="switch-track"></span><span>No padding</span></label>
+          <label class="switch"><input type="checkbox" id="opt-datauri" role="switch"><span class="switch-track"></span><span>Data URI</span></label>
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <div class="split">
+          <div class="field" id="input-field">
+            <div class="field-head">
+              <label class="field-label" for="input" id="input-label">Text</label>
+              <button class="btn btn-ghost" type="button" id="open-file"><span data-icon="upload"></span>Open file</button>
+              <button class="btn btn-ghost btn-icon" type="button" id="clear" aria-label="Clear input" title="Clear"><span data-icon="trash"></span></button>
+            </div>
+            <textarea id="input" class="textarea" spellcheck="false" autocapitalize="off" autocomplete="off"
+              placeholder="Type or paste text, or drop a file here…"></textarea>
+            <div class="file-card" id="file-card" hidden>
+              <span class="file-card-icon"><span data-icon="file"></span></span>
+              <span class="file-card-name" id="file-name"></span>
+              <span class="file-card-meta" id="file-meta"></span>
+              <button class="btn" type="button" id="remove-file"><span data-icon="close"></span>Remove file</button>
+            </div>
+            <input type="file" id="file" hidden>
+          </div>
+
+          <div class="split-mid">
+            <button class="btn btn-round" type="button" id="swap" aria-label="Use output as input and switch mode" title="Use output as input"><span data-icon="swap"></span></button>
+          </div>
+
+          <div class="field">
+            <div class="field-head">
+              <label class="field-label" for="output" id="output-label">Base64</label>
+              <button class="btn btn-ghost" type="button" id="download"><span data-icon="download"></span>Download</button>
+              <button class="btn" type="button" id="copy"><span data-icon="copy"></span>Copy</button>
+            </div>
+            <textarea id="output" class="textarea" readonly spellcheck="false" placeholder="Result appears here."></textarea>
+            <div class="file-card" id="binary-card" hidden>
+              <span class="file-card-icon"><span data-icon="binary"></span></span>
+              <span class="file-card-name">Binary data</span>
+              <span class="file-card-meta" id="binary-meta"></span>
+              <button class="btn btn-primary" type="button" id="download-binary"><span data-icon="download"></span>Download file</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="status" id="status" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer data-shell-footer></footer>
+</body>
+</html>

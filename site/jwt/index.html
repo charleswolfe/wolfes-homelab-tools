@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>JWT Decoder · Homelab Tools</title>
+  <meta name="description" content="Decode JSON Web Tokens locally: header, payload, readable claims and expiry status. The token never leaves your browser.">
+  <meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/theme.css">
+  <script src="/assets/theme-init.js"></script>
+  <script type="module" src="/assets/shell.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body data-tool="jwt">
+  <header data-shell-header></header>
+
+  <main class="page container">
+    <nav class="crumbs" aria-label="Breadcrumb" data-crumbs></nav>
+    <div class="tool-head">
+      <span data-tool-icon></span>
+      <div>
+        <h1>JWT Decoder</h1>
+        <p class="lede">Read a token’s header, payload and expiry. Decoding happens in this page only, so it’s safe for real tokens. Signatures are shown but not verified.</p>
+      </div>
+    </div>
+
+    <div class="sections">
+      <section class="panel">
+        <div class="panel-body stack">
+          <div class="field">
+            <div class="field-head">
+              <label class="field-label" for="token">Token</label>
+              <button class="btn btn-ghost" type="button" id="example">Example</button>
+              <button class="btn btn-ghost btn-icon" type="button" id="clear" aria-label="Clear token" title="Clear"><span data-icon="trash"></span></button>
+            </div>
+            <textarea id="token" class="textarea is-compact" rows="5" spellcheck="false" autocapitalize="off" autocomplete="off"
+              placeholder="Paste a JWT (eyJhbGciOi…). A leading “Bearer ” is fine."></textarea>
+          </div>
+          <div class="jwt-token" id="colored" hidden></div>
+        </div>
+        <div class="panel-body messages" id="messages" aria-live="polite"></div>
+      </section>
+
+      <div class="grid-2" id="decoded" hidden>
+        <section class="panel">
+          <div class="panel-head"><h2><span class="jwt-h">Header</span></h2><button class="btn btn-ghost btn-icon" type="button" id="copy-header" aria-label="Copy header JSON" title="Copy"><span data-icon="copy"></span></button></div>
+          <pre class="json-view" id="header-json"></pre>
+          <div class="rows" id="header-rows"></div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><h2><span class="jwt-p">Payload</span></h2><button class="btn btn-ghost btn-icon" type="button" id="copy-payload" aria-label="Copy payload JSON" title="Copy"><span data-icon="copy"></span></button></div>
+          <pre class="json-view" id="payload-json"></pre>
+        </section>
+      </div>
+
+      <section class="panel" id="claims-panel" hidden>
+        <div class="panel-head"><h2>Claims</h2><span class="hint">Times shown in your local zone</span></div>
+        <div class="rows" id="claims"></div>
+      </section>
+
+      <section class="panel" id="sig-panel" hidden>
+        <div class="panel-head"><h2><span class="jwt-s">Signature</span></h2><span class="badge badge-warn">Not verified</span></div>
+        <div class="rows" id="sig"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer data-shell-footer></footer>
+</body>
+</html>

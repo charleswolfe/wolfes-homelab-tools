@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'none'; worker-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Bitcoin Paper Wallet · Homelab Tools</title>
+  <meta name="description" content="Generate printable Bitcoin paper wallets offline: Native SegWit, Taproot, Nested SegWit or Legacy addresses with private keys in WIF, plus a checker for existing keys.">
+  <meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/theme.css">
+  <script src="/assets/theme-init.js"></script>
+  <script type="module" src="/assets/shell.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body data-tool="bitcoin-wallet">
+  <header data-shell-header></header>
+
+  <main class="page container">
+    <nav class="crumbs" aria-label="Breadcrumb" data-crumbs></nav>
+    <div class="tool-head">
+      <span data-tool-icon></span>
+      <div>
+        <h1>Bitcoin Paper Wallet</h1>
+        <p class="lede">Generate a key pair in this browser and print it. The private key never leaves the page: this page is blocked from making any network request, and nothing is saved.</p>
+      </div>
+    </div>
+
+    <div class="sections">
+      <section class="panel no-print" aria-labelledby="safety-title">
+        <div class="panel-head">
+          <h2 id="safety-title">Safety checks</h2>
+          <span class="hint">Update live</span>
+        </div>
+        <div class="rows" id="checks"></div>
+        <details class="cheatsheet">
+          <summary><span data-icon="chevronRight"></span>How to make a paper wallet safely</summary>
+          <ol class="steps">
+            <li><strong>Load this page, then disconnect</strong> from the network (Wi-Fi off, cable out). Everything still works offline.</li>
+            <li>Use a <strong>private/incognito window</strong> without extensions, ideally on a freshly booted machine.</li>
+            <li><strong>Print to a printer you trust.</strong> Avoid network, cloud or shared office printers, which can keep copies.</li>
+            <li><strong>Close the tab</strong> (or press Clear) before reconnecting.</li>
+            <li><strong>Verify the paper</strong>: type the private key into “Check a private key” and confirm it shows the printed address.</li>
+            <li><strong>Send a small amount first</strong> and confirm it arrives before sending more.</li>
+            <li>Store the paper somewhere dry and secret. Anyone who can read the private key can spend the funds, and if the paper is lost, so are the funds.</li>
+          </ol>
+        </details>
+      </section>
+
+      <section class="panel no-print" aria-labelledby="gen-title">
+        <div class="panel-head"><h2 id="gen-title">Generate</h2></div>
+        <div class="panel-body stack-lg">
+          <div class="style-row">
+            <span class="form-label" id="type-label">Address type</span>
+            <div class="stack-sm">
+              <div class="segmented segmented-wrap" role="radiogroup" aria-labelledby="type-label" id="types"></div>
+              <span class="hint" id="type-hint"></span>
+            </div>
+          </div>
+          <div class="style-row">
+            <span class="form-label" id="net-label">Network</span>
+            <div class="segmented" role="radiogroup" aria-labelledby="net-label">
+              <label><input type="radio" name="network" value="mainnet" checked><span>Mainnet</span></label>
+              <label><input type="radio" name="network" value="testnet"><span>Testnet</span></label>
+            </div>
+          </div>
+          <div class="style-row">
+            <label class="form-label" for="count">How many</label>
+            <div class="row-flex">
+              <input class="input" type="number" id="count" min="1" max="8" value="1" inputmode="numeric">
+              <span class="hint">Up to 8 wallets, one per printed card.</span>
+            </div>
+          </div>
+          <div class="style-row">
+            <label class="form-label" for="entropy">Extra entropy <small>optional</small></label>
+            <div class="stack-sm">
+              <input class="input input-mono w-full" id="entropy" type="password" autocomplete="off" spellcheck="false" placeholder="Dice rolls or random typing">
+              <span class="hint">Mixed (SHA-256) with the browser’s secure random generator. It can only add randomness, never weaken it.</span>
+            </div>
+          </div>
+          <div class="row-flex">
+            <button class="btn btn-primary" type="button" id="generate"><span data-icon="sparkle"></span>Generate wallet</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel wallets-panel" id="wallets-panel" hidden aria-labelledby="wallets-title">
+        <div class="panel-head no-print">
+          <h2 id="wallets-title">Your wallets</h2>
+          <label class="switch"><input type="checkbox" id="reveal" role="switch"><span class="switch-track"></span><span>Show private keys</span></label>
+          <button class="btn" type="button" id="print"><span data-icon="file"></span>Print</button>
+          <button class="btn btn-ghost" type="button" id="clear"><span data-icon="trash"></span>Clear</button>
+        </div>
+        <div class="panel-body">
+          <p class="print-only print-note">Bitcoin paper wallet · Fold along the dashed line and keep the private-key half secret.</p>
+          <div class="wallets" id="wallets"></div>
+        </div>
+      </section>
+
+      <section class="panel no-print" aria-labelledby="check-title">
+        <div class="panel-head">
+          <h2 id="check-title">Check a private key</h2>
+          <span class="hint">Shows the addresses a key controls</span>
+        </div>
+        <div class="panel-body stack">
+          <div class="row-flex">
+            <label class="visually-hidden" for="check-wif">Private key (WIF)</label>
+            <input class="input input-mono grow" id="check-wif" type="password" autocomplete="off" spellcheck="false" autocapitalize="off" placeholder="WIF private key: 5…, K…, L…, or c… for testnet">
+            <button class="btn btn-ghost" type="button" id="check-toggle" aria-pressed="false">Show</button>
+          </div>
+          <div class="messages" id="check-messages"></div>
+        </div>
+        <div class="rows" id="check-rows"></div>
+      </section>
+
+      <section class="panel no-print">
+        <details class="cheatsheet">
+          <summary><span data-icon="chevronRight"></span>Spending from a paper wallet</summary>
+          <div class="panel-body stack prose">
+            <p><strong>Sweep, don’t reuse.</strong> When you spend, move the whole balance into a normal wallet in one go (“sweep”), then treat the paper as used.</p>
+            <p><strong>Bitcoin Core</strong> (descriptor wallet): use the descriptor printed on the card, including its <code>#checksum</code>:</p>
+            <pre class="code-block">bitcoin-cli importdescriptors '[{"desc":"wpkh(K…)#xxxxxxxx","timestamp":"now"}]'</pre>
+            <p>Use <code>"timestamp": 0</code> instead of <code>"now"</code> if funds may already have arrived, so Core rescans the chain.</p>
+            <p><strong>Electrum</strong>: <em>File → New → Import Bitcoin addresses or private keys</em>, or <em>Wallet → Private keys → Sweep</em>. Prefix the key with its type: <code>p2wpkh:K…</code>, <code>p2wpkh-p2sh:K…</code> or <code>p2pkh:K…</code>. Electrum can’t import Taproot keys; use Bitcoin Core or Sparrow with <code>tr(K…)</code>.</p>
+            <p><strong>Not password-protected.</strong> These keys aren’t BIP 38 encrypted. Anyone who can read the private key can spend the funds.</p>
+          </div>
+        </details>
+      </section>
+    </div>
+  </main>
+
+  <footer data-shell-footer></footer>
+</body>
+</html>

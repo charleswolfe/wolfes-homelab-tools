@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>URL Encode / Decode · Homelab Tools</title>
+  <meta name="description" content="Percent-encode and decode URLs and query values, with component, RFC 3986, full-URL and form encodings, plus a URL breakdown.">
+  <meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/theme.css">
+  <script src="/assets/theme-init.js"></script>
+  <script type="module" src="/assets/shell.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body data-tool="url">
+  <header data-shell-header></header>
+
+  <main class="page container">
+    <nav class="crumbs" aria-label="Breadcrumb" data-crumbs></nav>
+    <div class="tool-head">
+      <span data-tool-icon></span>
+      <div>
+        <h1>URL Encode / Decode</h1>
+        <p class="lede">Percent-encode text for URLs and decode it back. Paste a full URL to see its parts and query parameters.</p>
+      </div>
+    </div>
+
+    <div class="sections">
+      <section class="panel">
+        <div class="panel-bar">
+          <div class="segmented" role="radiogroup" aria-label="Mode">
+            <label><input type="radio" name="mode" value="encode" checked><span>Encode</span></label>
+            <label><input type="radio" name="mode" value="decode"><span>Decode</span></label>
+          </div>
+          <label class="inline-field" id="encoding-field">Encoding
+            <select class="select" id="encoding"></select>
+          </label>
+          <label class="switch" id="plus-field" hidden><input type="checkbox" id="opt-plus" role="switch"><span class="switch-track"></span><span>Treat + as space</span></label>
+        </div>
+
+        <div class="panel-body">
+          <div class="split">
+            <div class="field">
+              <div class="field-head">
+                <label class="field-label" for="input" id="input-label">Text</label>
+                <button class="btn btn-ghost btn-icon" type="button" id="clear" aria-label="Clear input" title="Clear"><span data-icon="trash"></span></button>
+              </div>
+              <textarea id="input" class="textarea" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+            </div>
+            <div class="split-mid">
+              <button class="btn btn-round" type="button" id="swap" aria-label="Use output as input and switch mode" title="Use output as input"><span data-icon="swap"></span></button>
+            </div>
+            <div class="field">
+              <div class="field-head">
+                <label class="field-label" for="output" id="output-label">Encoded</label>
+                <button class="btn" type="button" id="copy"><span data-icon="copy"></span>Copy</button>
+              </div>
+              <textarea id="output" class="textarea" readonly spellcheck="false" placeholder="Result appears here."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="status" id="status" aria-live="polite"></div>
+      </section>
+
+      <section class="panel" id="parts-panel" hidden>
+        <div class="panel-head">
+          <h2>URL breakdown</h2>
+          <span class="hint" id="parts-source"></span>
+        </div>
+        <div class="rows" id="parts"></div>
+        <div id="params-wrap" hidden>
+          <div class="panel-head"><h2>Query parameters</h2><span class="hint" id="params-count"></span></div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>#</th><th>Name</th><th>Value (decoded)</th></tr></thead>
+              <tbody id="params"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer data-shell-footer></footer>
+</body>
+</html>

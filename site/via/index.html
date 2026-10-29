@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>VIA Keyboard Configurator · Homelab Tools</title>
+  <meta name="description" content="Remap QMK keyboards with VIA in your browser over WebHID. A self-hosted, fully offline copy with every supported keyboard definition bundled.">
+  <meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/theme.css">
+  <script src="/assets/theme-init.js"></script>
+  <script type="module" src="/assets/shell.js"></script>
+  <script type="module" src="./launcher.js"></script>
+</head>
+<body data-tool="via">
+  <header data-shell-header></header>
+
+  <main class="page container">
+    <nav class="crumbs" aria-label="Breadcrumb" data-crumbs></nav>
+    <div class="tool-head">
+      <span data-tool-icon></span>
+      <div>
+        <h1>VIA Keyboard Configurator</h1>
+        <p class="lede">Remap keys, layers, macros and lighting on VIA-enabled QMK keyboards, right in the browser. This copy runs fully offline, with every keyboard in VIA’s catalog bundled.</p>
+      </div>
+    </div>
+
+    <div class="sections">
+      <section class="panel" aria-labelledby="ready-title">
+        <div class="panel-head">
+          <h2 id="ready-title">Ready to connect?</h2>
+        </div>
+        <div class="rows" id="checks"></div>
+        <div class="panel-body stack">
+          <div class="row-flex">
+            <a class="btn btn-primary btn-lg" id="open" href="/via/app/"><span data-icon="keyboard"></span>Open VIA</a>
+            <span class="hint" id="open-hint"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="devices-panel" hidden aria-labelledby="devices-title">
+        <div class="panel-head">
+          <h2 id="devices-title">Keyboards this browser can already use</h2>
+          <span class="hint">Authorized earlier; VIA connects to them without asking</span>
+        </div>
+        <div class="rows" id="devices"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="how-title">
+        <div class="panel-head"><h2 id="how-title">How to use it</h2></div>
+        <ol class="steps">
+          <li><strong>Plug in your keyboard.</strong> It needs firmware with VIA enabled (most QMK keyboards sold as “VIA compatible”).</li>
+          <li><strong>Open VIA</strong> and click <em>Authorize device</em>. Pick your keyboard in the browser’s prompt.</li>
+          <li><strong>Remap.</strong> Changes are written to the keyboard straight away and stay on it, so no software is needed afterwards.</li>
+        </ol>
+        <details class="cheatsheet">
+          <summary><span data-icon="chevronRight"></span>My keyboard isn’t recognized</summary>
+          <div class="panel-body stack prose">
+            <p><strong>Check the firmware.</strong> The keyboard must run QMK with VIA enabled. Stock firmware from many brands doesn’t.</p>
+            <p><strong>Not in the catalog?</strong> Get your keyboard’s VIA definition (a <code>.json</code> file) from its maker. In VIA, open <em>Settings</em> → turn on <em>Show Design tab</em> → <em>Design</em> → <em>Load draft definition</em>, then authorize the keyboard again.</p>
+            <p><strong>Nothing happens on “Authorize device”?</strong> On Linux, give your user access to hidraw devices with a udev rule; on Windows and macOS no setup is needed.</p>
+          </div>
+        </details>
+      </section>
+
+      <section class="panel" aria-labelledby="about-title">
+        <div class="panel-head"><h2 id="about-title">About this copy</h2></div>
+        <div class="panel-body stack prose">
+          <p>VIA is open-source software by the VIA team, licensed under the <a href="/via/app/LICENSE.txt">GNU GPL v3</a>. This copy is built from the official source (<span class="mono" id="version">the-via/app</span>) with changes that make it work offline and privately and fit this site:</p>
+          <ul class="bullets">
+            <li>keyboard definitions, fonts and the 3D decoder are served from this server instead of the internet;</li>
+            <li>links to outside sites (Discord, GitHub, docs) and GitHub gist syncing are removed;</li>
+            <li>the commercial Gotham Rounded font is replaced with the open Fira Sans;</li>
+            <li>it uses this site’s header, colours and light/dark setting, and it’s a normal page rather than an app your browser offers to install.</li>
+          </ul>
+          <p>The exact patches and build script are in <code>scripts/via/</code> of this project, so the copy can be rebuilt from source.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer data-shell-footer></footer>
+</body>
+</html>

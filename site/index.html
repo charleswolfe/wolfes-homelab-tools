@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Homelab Tools</title>
+  <meta name="description" content="Private, offline-capable browser utilities: QR codes, JSON, YAML, Base64, JWT, regex, hashes, UUIDs, timestamps, a Bitcoin paper wallet and the VIA keyboard configurator.">
+  <meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/theme.css">
+  <script src="/assets/theme-init.js"></script>
+  <script type="module" src="/assets/shell.js"></script>
+  <script type="module" src="/assets/index.js"></script>
+</head>
+<body>
+  <header data-shell-header></header>
+
+  <main>
+    <section class="hero container">
+      <p class="hero-eyebrow"><span class="dot"></span>Runs locally · works offline · no tracking</p>
+      <h1>Small, sharp tools for <em>everyday</em> dev and homelab work.</h1>
+      <p class="hero-sub">Encode, convert, validate and generate without pasting your data into someone else’s server.</p>
+
+      <div class="hero-search" role="search">
+        <span data-icon="search"></span>
+        <label class="visually-hidden" for="filter">Filter tools</label>
+        <input id="filter" type="search" placeholder="Filter tools: yaml, hash, qr…" autocomplete="off" spellcheck="false">
+        <kbd>/</kbd>
+      </div>
+
+      <div class="recent" id="recent" hidden></div>
+    </section>
+
+    <div class="container">
+      <div class="cat-grid" id="categories"></div>
+      <div class="empty-state" id="empty" hidden>
+        <strong>No tools match that search.</strong>
+        Try a broader term, or clear the filter.
+      </div>
+      <noscript><p class="alert alert-warn">These tools run in your browser and need JavaScript enabled.</p></noscript>
+    </div>
+  </main>
+
+  <footer data-shell-footer></footer>
+</body>
+</html>

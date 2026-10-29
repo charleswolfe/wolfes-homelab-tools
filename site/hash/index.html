@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Hash Generator · Homelab Tools</title>
+  <meta name="description" content="Generate SHA-256, SHA-384, SHA-512 and MD5 hashes for text or files in your browser, and check a file against a published checksum.">
+  <meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/theme.css">
+  <script src="/assets/theme-init.js"></script>
+  <script type="module" src="/assets/shell.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body data-tool="hash">
+  <header data-shell-header></header>
+
+  <main class="page container">
+    <nav class="crumbs" aria-label="Breadcrumb" data-crumbs></nav>
+    <div class="tool-head">
+      <span data-tool-icon></span>
+      <div>
+        <h1>Hash Generator</h1>
+        <p class="lede">SHA-256, SHA-384, SHA-512 and MD5 digests of text or files. Files are hashed locally and never uploaded.</p>
+      </div>
+    </div>
+
+    <div class="sections">
+      <section class="panel">
+        <div class="panel-bar">
+          <div class="segmented" role="radiogroup" aria-label="Input type">
+            <label><input type="radio" name="source" value="text" checked><span>Text</span></label>
+            <label><input type="radio" name="source" value="file"><span>File</span></label>
+          </div>
+          <div class="options">
+            <label class="inline-field">Output
+              <select class="select" id="format">
+                <option value="hex">Hex</option>
+                <option value="HEX">HEX (upper)</option>
+                <option value="base64">Base64</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="field" id="text-field">
+            <label class="visually-hidden" for="text">Text to hash</label>
+            <textarea id="text" class="textarea is-compact" rows="6" spellcheck="false" autocapitalize="off" autocomplete="off"
+              placeholder="Type or paste text. It is hashed as UTF-8 bytes, exactly as written (including trailing newlines)."></textarea>
+          </div>
+          <div class="field" id="file-field" hidden>
+            <div class="file-card" id="drop">
+              <span class="file-card-icon"><span data-icon="file"></span></span>
+              <span class="file-card-name" id="file-name">Drop a file here</span>
+              <span class="file-card-meta" id="file-meta">or choose one from your device</span>
+              <button class="btn btn-primary" type="button" id="choose"><span data-icon="upload"></span>Choose file</button>
+            </div>
+            <input type="file" id="file" hidden>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Digests</h2>
+          <span class="hint" id="meta"></span>
+        </div>
+        <div class="rows" id="digests"></div>
+        <div class="panel-body stack">
+          <div class="alert alert-warn"><span data-icon="alert"></span><div><strong>MD5 is not suitable for security-sensitive uses.</strong> Collisions can be produced cheaply, so never use it for passwords, signatures or tamper detection. It is fine for matching a download against a published MD5 checksum. Prefer SHA-256 or stronger.</div></div>
+          <div class="field">
+            <label class="field-label" for="compare">Verify against an expected hash</label>
+            <input class="input input-mono w-full" id="compare" spellcheck="false" autocomplete="off" autocapitalize="off"
+              placeholder="Paste a published checksum (hex or Base64) to see which algorithm matches">
+          </div>
+          <div class="messages" id="compare-result"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer data-shell-footer></footer>
+</body>
+</html>

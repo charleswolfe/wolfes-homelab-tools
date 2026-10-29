@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>UUID Generator · Homelab Tools</title>
+  <meta name="description" content="Generate random v4 and time-ordered v7 UUIDs in bulk, and inspect any UUID's version, variant and timestamp.">
+  <meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/theme.css">
+  <script src="/assets/theme-init.js"></script>
+  <script type="module" src="/assets/shell.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body data-tool="uuid">
+  <header data-shell-header></header>
+
+  <main class="page container">
+    <nav class="crumbs" aria-label="Breadcrumb" data-crumbs></nav>
+    <div class="tool-head">
+      <span data-tool-icon></span>
+      <div>
+        <h1>UUID Generator</h1>
+        <p class="lede">Random v4 or time-ordered v7 UUIDs (RFC 9562), generated with your browser’s cryptographic random number generator.</p>
+      </div>
+    </div>
+
+    <div class="sections">
+      <section class="panel">
+        <div class="panel-bar">
+          <div class="segmented" role="radiogroup" aria-label="UUID version">
+            <label><input type="radio" name="version" value="v4" checked><span>v4 · random</span></label>
+            <label><input type="radio" name="version" value="v7"><span>v7 · time-ordered</span></label>
+          </div>
+          <label class="inline-field">How many
+            <input class="input" type="number" id="count" min="1" max="1000" value="5" inputmode="numeric">
+          </label>
+        </div>
+        <div class="panel-bar">
+          <div class="options">
+            <label class="switch"><input type="checkbox" id="opt-upper" role="switch"><span class="switch-track"></span><span>Uppercase</span></label>
+            <label class="switch"><input type="checkbox" id="opt-nohyphens" role="switch"><span class="switch-track"></span><span>No hyphens</span></label>
+            <label class="switch"><input type="checkbox" id="opt-braces" role="switch"><span class="switch-track"></span><span>{Braces}</span></label>
+          </div>
+        </div>
+        <div class="panel-body stack">
+          <div class="row-flex">
+            <button class="btn btn-primary" type="button" id="generate"><span data-icon="sparkle"></span>Generate</button>
+            <span class="hint" id="version-hint"></span>
+            <span class="grow"></span>
+            <button class="btn btn-ghost" type="button" id="download"><span data-icon="download"></span>Download</button>
+            <button class="btn" type="button" id="copy"><span data-icon="copy"></span>Copy all</button>
+          </div>
+          <label class="visually-hidden" for="output">Generated UUIDs</label>
+          <textarea id="output" class="textarea is-compact" readonly spellcheck="false"></textarea>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Inspect a UUID</h2>
+          <span class="hint">Version, variant and embedded timestamp</span>
+        </div>
+        <div class="panel-body">
+          <label class="visually-hidden" for="inspect">UUID to inspect</label>
+          <input class="input input-mono input-lg w-full" id="inspect" spellcheck="false" autocomplete="off" autocapitalize="off"
+            placeholder="Paste any UUID, e.g. 018f3a7e-…, {…} or urn:uuid:…">
+        </div>
+        <div class="panel-body messages" id="inspect-messages"></div>
+        <div class="rows" id="inspect-rows"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer data-shell-footer></footer>
+</body>
+</html>

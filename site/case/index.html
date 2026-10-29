@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Case Converter &amp; Slugify · Homelab Tools</title>
+  <meta name="description" content="Convert text between slug, camelCase, PascalCase, snake_case, CONSTANT_CASE, kebab-case, Title Case and more, line by line.">
+  <meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/theme.css">
+  <script src="/assets/theme-init.js"></script>
+  <script type="module" src="/assets/shell.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body data-tool="case">
+  <header data-shell-header></header>
+
+  <main class="page container">
+    <nav class="crumbs" aria-label="Breadcrumb" data-crumbs></nav>
+    <div class="tool-head">
+      <span data-tool-icon></span>
+      <div>
+        <h1>Case Converter</h1>
+        <p class="lede">Slugify text or convert it between identifier styles. Each line converts on its own, so you can paste a whole list.</p>
+      </div>
+    </div>
+
+    <div class="sections">
+      <section class="panel">
+        <div class="panel-body">
+          <div class="field">
+            <div class="field-head">
+              <label class="field-label" for="input">Text</label>
+              <button class="btn btn-ghost" type="button" id="example">Try an example</button>
+              <button class="btn btn-ghost btn-icon" type="button" id="clear" aria-label="Clear input" title="Clear"><span data-icon="trash"></span></button>
+            </div>
+            <textarea id="input" class="textarea is-compact" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off"
+              placeholder="Type or paste text, e.g. “User account settings” or getUserByID"></textarea>
+          </div>
+        </div>
+        <div class="panel-bar">
+          <label class="inline-field">Slug separator
+            <select class="select" id="separator">
+              <option value="-">Hyphen  -</option>
+              <option value="_">Underscore  _</option>
+              <option value=".">Dot  .</option>
+              <option value="">None</option>
+            </select>
+          </label>
+          <label class="switch"><input type="checkbox" id="opt-keepcase" role="switch"><span class="switch-track"></span><span>Keep slug case</span></label>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-body">
+          <div class="card-grid" id="results"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer data-shell-footer></footer>
+</body>
+</html>

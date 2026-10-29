@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Regex Tester · Homelab Tools</title>
+  <meta name="description" content="Test JavaScript regular expressions with live match highlighting, capture groups, named groups and a replace preview.">
+  <meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/theme.css">
+  <script src="/assets/theme-init.js"></script>
+  <script type="module" src="/assets/shell.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body data-tool="regex">
+  <header data-shell-header></header>
+
+  <main class="page container">
+    <nav class="crumbs" aria-label="Breadcrumb" data-crumbs></nav>
+    <div class="tool-head">
+      <span data-tool-icon></span>
+      <div>
+        <h1>Regex Tester</h1>
+        <p class="lede">JavaScript (ECMAScript) regular expressions with live highlighting. Patterns run in a background worker and are stopped after one second if they hang.</p>
+      </div>
+    </div>
+
+    <div class="sections">
+      <section class="panel">
+        <div class="panel-body stack">
+          <div class="pattern-bar" id="pattern-bar">
+            <span class="slash">/</span>
+            <input id="pattern" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="Regular expression pattern" placeholder="(?<user>[\w.]+)@(?<domain>[\w.]+)">
+            <span class="slash">/</span>
+            <span class="flags-text" id="flags-text"></span>
+          </div>
+          <div class="flag-toggles" id="flags" role="group" aria-label="Flags"></div>
+        </div>
+        <div class="panel-body messages" id="messages" aria-live="polite"></div>
+        <div class="panel-body">
+          <div class="field">
+            <div class="field-head">
+              <label class="field-label" for="text">Test string</label>
+              <span class="hint" id="match-count"></span>
+            </div>
+            <div class="hl">
+              <div class="hl-backdrop" id="backdrop" aria-hidden="true"></div>
+              <textarea id="text" class="textarea" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid-2">
+        <section class="panel">
+          <div class="panel-head"><h2>Matches</h2><span class="hint" id="matches-meta"></span></div>
+          <ol class="match-list" id="matches"></ol>
+        </section>
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Replace</h2>
+            <button class="btn btn-ghost btn-icon" type="button" id="copy-replaced" aria-label="Copy result" title="Copy"><span data-icon="copy"></span></button>
+          </div>
+          <div class="panel-body stack">
+            <label class="visually-hidden" for="replacement">Replacement</label>
+            <input class="input input-mono w-full" id="replacement" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="Replacement, e.g. $<user> at $2 or $&">
+            <label class="visually-hidden" for="replaced">Result</label>
+            <textarea id="replaced" class="textarea is-compact" rows="7" readonly spellcheck="false" placeholder="Enter a replacement to preview the result."></textarea>
+          </div>
+        </section>
+      </div>
+
+      <section class="panel">
+        <details class="cheatsheet">
+          <summary><span data-icon="chevronRight"></span>Quick reference</summary>
+          <div class="cheats">
+            <div><code>.</code><span>Any character except newline</span></div>
+            <div><code>\d \w \s</code><span>Digit, word char, whitespace</span></div>
+            <div><code>\D \W \S</code><span>Negated versions</span></div>
+            <div><code>\b</code><span>Word boundary</span></div>
+            <div><code>^ $</code><span>Start / end (of line with m)</span></div>
+            <div><code>[abc]</code><span>Any of a, b, c</span></div>
+            <div><code>[^abc]</code><span>Not a, b or c</span></div>
+            <div><code>a|b</code><span>a or b</span></div>
+            <div><code>* + ?</code><span>0+, 1+, 0 or 1</span></div>
+            <div><code>{2,5}</code><span>Between 2 and 5 times</span></div>
+            <div><code>*? +?</code><span>Lazy (as few as possible)</span></div>
+            <div><code>(…)</code><span>Capture group → $1</span></div>
+            <div><code>(?&lt;n&gt;…)</code><span>Named group → $&lt;n&gt;</span></div>
+            <div><code>(?:…)</code><span>Group without capturing</span></div>
+            <div><code>\1</code><span>Back-reference to group 1</span></div>
+            <div><code>(?=…)</code><span>Followed by</span></div>
+            <div><code>(?!…)</code><span>Not followed by</span></div>
+            <div><code>(?&lt;=…)</code><span>Preceded by</span></div>
+            <div><code>(?&lt;!…)</code><span>Not preceded by</span></div>
+            <div><code>\p{L}</code><span>Unicode letter (needs u)</span></div>
+            <div><code>$&amp;</code><span>Whole match in replacement</span></div>
+            <div><code>$` $'</code><span>Text before / after match</span></div>
+          </div>
+        </details>
+      </section>
+    </div>
+  </main>
+
+  <footer data-shell-footer></footer>
+</body>
+</html>

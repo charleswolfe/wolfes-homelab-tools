@@ -1,0 +1,119 @@
+/* ==========================================================================
+   Homelab Tools: design tokens (light, dark, forced theme)
+   Shared by theme.css pages and the VIA skin (/via/skin.css).
+   ========================================================================== */
+
+/* ---------- tokens ---------- */
+
+:root {
+  color-scheme: light;
+  --bg: #f5f4ef;
+  --surface: #ffffff;
+  --surface-2: #f1efe8;
+  --surface-3: #e6e3d9;
+  --raised: #ffffff;
+  --border: #e3e0d6;
+  --border-strong: #cdc9bc;
+  --text: #1b1a17;
+  --text-2: #47453f;
+  --muted: #75726a;
+
+  --accent: #1f6f5c;
+  --accent-hover: #175747;
+  --accent-soft: #dbeee7;
+  --accent-text: #ffffff;
+  --focus: #2a8a72;
+
+  --danger: #b42318;
+  --danger-soft: #fdecea;
+  --warn: #8f5300;
+  --warn-soft: #fdf1d8;
+  --ok: #1d7a4a;
+  --ok-soft: #e1f3e8;
+
+  --cat-generate: #1f6f5c;  --cat-generate-soft: #dbeee7;
+  --cat-convert: #3654b0;   --cat-convert-soft: #e2e8fa;
+  --cat-inspect: #9c5600;   --cat-inspect-soft: #faebd3;
+  --cat-hardware: #86399c;  --cat-hardware-soft: #f2e3f6;
+
+  --shadow-sm: 0 1px 2px rgb(27 26 23 / 0.06);
+  --shadow: 0 1px 2px rgb(27 26 23 / 0.04), 0 6px 20px -8px rgb(27 26 23 / 0.12);
+  --shadow-lg: 0 2px 6px rgb(27 26 23 / 0.06), 0 24px 60px -16px rgb(27 26 23 / 0.3);
+
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, "Cascadia Code", Menlo, Consolas, "Liberation Mono", monospace;
+
+  --header-h: 60px;
+  --gutter: 16px;
+  --maxw: 1120px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #111210;
+    --surface: #1a1b18;
+    --surface-2: #21231f;
+    --surface-3: #2b2e28;
+    --raised: #353831;
+    --border: #2c2f29;
+    --border-strong: #3d4038;
+    --text: #ecebe5;
+    --text-2: #c5c3ba;
+    --muted: #8f8d84;
+    --accent: #5cc8a8;
+    --accent-hover: #7fd8bd;
+    --accent-soft: #163a30;
+    --accent-text: #0b1f19;
+    --focus: #5cc8a8;
+    --danger: #f97066;
+    --danger-soft: #3b1713;
+    --warn: #f3b14a;
+    --warn-soft: #39290d;
+    --ok: #5fd08f;
+    --ok-soft: #12311e;
+    --cat-generate: #5cc8a8;  --cat-generate-soft: #163a30;
+    --cat-convert: #8fa7f6;   --cat-convert-soft: #1c2546;
+    --cat-inspect: #f0a948;   --cat-inspect-soft: #3a2a10;
+    --cat-hardware: #d290e5;  --cat-hardware-soft: #33193b;
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 8px 24px -10px rgb(0 0 0 / 0.5);
+    --shadow-lg: 0 2px 6px rgb(0 0 0 / 0.35), 0 28px 64px -16px rgb(0 0 0 / 0.7);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111210;
+  --surface: #1a1b18;
+  --surface-2: #21231f;
+  --surface-3: #2b2e28;
+  --raised: #353831;
+  --border: #2c2f29;
+  --border-strong: #3d4038;
+  --text: #ecebe5;
+  --text-2: #c5c3ba;
+  --muted: #8f8d84;
+  --accent: #5cc8a8;
+  --accent-hover: #7fd8bd;
+  --accent-soft: #163a30;
+  --accent-text: #0b1f19;
+  --focus: #5cc8a8;
+  --danger: #f97066;
+  --danger-soft: #3b1713;
+  --warn: #f3b14a;
+  --warn-soft: #39290d;
+  --ok: #5fd08f;
+  --ok-soft: #12311e;
+  --cat-generate: #5cc8a8;  --cat-generate-soft: #163a30;
+  --cat-convert: #8fa7f6;   --cat-convert-soft: #1c2546;
+  --cat-inspect: #f0a948;   --cat-inspect-soft: #3a2a10;
+  --cat-hardware: #d290e5;  --cat-hardware-soft: #33193b;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 8px 24px -10px rgb(0 0 0 / 0.5);
+  --shadow-lg: 0 2px 6px rgb(0 0 0 / 0.35), 0 28px 64px -16px rgb(0 0 0 / 0.7);
+}

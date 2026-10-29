@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>QR Code Generator · Homelab Tools</title>
+  <meta name="description" content="Make QR codes for URLs, Wi-Fi, contacts, email, SMS, phone, locations, calendar events and crypto payments, with custom colors, module styles and a center logo. PNG and SVG export.">
+  <meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/theme.css">
+  <script src="/assets/theme-init.js"></script>
+  <script type="module" src="/assets/shell.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body data-tool="qr">
+  <header data-shell-header></header>
+
+  <main class="page container">
+    <nav class="crumbs" aria-label="Breadcrumb" data-crumbs></nav>
+    <div class="tool-head">
+      <span data-tool-icon></span>
+      <div>
+        <h1>QR Code Generator</h1>
+        <p class="lede">Codes for links, Wi-Fi, contacts and more, with your colors and logo. Generated in your browser; nothing you type is stored or sent anywhere.</p>
+      </div>
+    </div>
+
+    <div class="qr-layout">
+      <section class="panel qr-content" aria-labelledby="content-title">
+        <div class="panel-head"><h2 id="content-title">Content</h2></div>
+        <div class="panel-body stack">
+          <div class="type-chips" id="types" role="radiogroup" aria-label="Content type"></div>
+          <p class="hint" id="type-hint"></p>
+          <form class="form-grid" id="form" novalidate autocomplete="off"></form>
+          <div class="messages" id="content-messages" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <aside class="panel qr-preview" aria-label="Preview">
+        <div class="qr-canvas-wrap">
+          <canvas id="preview" role="img" aria-label="QR code preview"></canvas>
+          <div class="qr-empty" id="empty"><div><span data-icon="qr"></span><p>Fill in the content to generate a code.</p></div></div>
+        </div>
+        <div class="panel-body stack">
+          <div class="qr-meta" id="meta"></div>
+          <div class="capacity" id="capacity" hidden><div class="capacity-bar" id="capacity-bar"></div></div>
+          <div class="messages" id="preview-messages" aria-live="polite"></div>
+          <div class="qr-actions">
+            <button class="btn btn-primary" type="button" id="dl-png" disabled><span data-icon="download"></span>PNG</button>
+            <button class="btn" type="button" id="dl-svg" disabled><span data-icon="download"></span>SVG</button>
+            <button class="btn" type="button" id="copy-img" hidden disabled><span data-icon="copy"></span>Copy</button>
+          </div>
+          <details class="payload">
+            <summary>Encoded text</summary>
+            <pre id="payload"></pre>
+          </details>
+        </div>
+      </aside>
+
+      <section class="panel qr-style" aria-labelledby="style-title">
+        <div class="panel-head">
+          <h2 id="style-title">Style</h2>
+          <button class="btn btn-ghost" type="button" id="reset-style">Reset</button>
+        </div>
+        <div class="panel-body stack-lg">
+          <div class="style-row">
+            <span class="form-label">Colors</span>
+            <div class="color-fields">
+              <div class="color-field">
+                <input type="color" id="fg" aria-label="Code color">
+                <input class="input input-mono" id="fg-hex" maxlength="7" spellcheck="false" aria-label="Code color hex">
+              </div>
+              <button class="btn btn-ghost btn-icon" type="button" id="swap-colors" aria-label="Swap colors" title="Swap colors"><span data-icon="swap"></span></button>
+              <div class="color-field">
+                <input type="color" id="bg" aria-label="Background color">
+                <input class="input input-mono" id="bg-hex" maxlength="7" spellcheck="false" aria-label="Background color hex">
+              </div>
+              <label class="switch"><input type="checkbox" id="transparent" role="switch"><span class="switch-track"></span><span>Transparent</span></label>
+            </div>
+          </div>
+
+          <div class="style-row">
+            <span class="form-label" id="module-label">Modules</span>
+            <div class="segmented" role="radiogroup" aria-labelledby="module-label">
+              <label><input type="radio" name="module" value="square"><span>Square</span></label>
+              <label><input type="radio" name="module" value="rounded"><span>Rounded</span></label>
+              <label><input type="radio" name="module" value="dots"><span>Dots</span></label>
+            </div>
+          </div>
+
+          <div class="style-row">
+            <span class="form-label" id="ecc-label">Error correction</span>
+            <div class="stack-sm">
+              <div class="segmented" id="ecc-group" role="radiogroup" aria-labelledby="ecc-label">
+                <label title="Recovers ~7% damage"><input type="radio" name="ecc" value="L"><span>L</span></label>
+                <label title="Recovers ~15% damage"><input type="radio" name="ecc" value="M"><span>M</span></label>
+                <label title="Recovers ~25% damage"><input type="radio" name="ecc" value="Q"><span>Q</span></label>
+                <label title="Recovers ~30% damage"><input type="radio" name="ecc" value="H"><span>H</span></label>
+              </div>
+              <span class="hint" id="ecc-hint"></span>
+            </div>
+          </div>
+
+          <div class="style-row">
+            <label class="form-label" for="margin">Quiet zone</label>
+            <div class="range"><input type="range" id="margin" min="0" max="8" step="1"><output id="margin-out" for="margin"></output></div>
+          </div>
+
+          <div class="style-row">
+            <span class="form-label">Logo</span>
+            <div class="stack-sm" id="logo-zone">
+              <div class="logo-box">
+                <img class="logo-thumb" id="logo-thumb" alt="" hidden>
+                <button class="btn" type="button" id="logo-pick"><span data-icon="image"></span><span id="logo-pick-label">Add logo</span></button>
+                <button class="btn btn-ghost" type="button" id="logo-remove" hidden>Remove</button>
+                <input type="file" id="logo-file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" hidden>
+              </div>
+              <div class="logo-options" id="logo-options" hidden>
+                <div class="range"><span class="hint">Size</span><input type="range" id="logo-size" min="10" max="30" step="1" aria-label="Logo size"><output id="logo-size-out" for="logo-size"></output></div>
+                <label class="switch"><input type="checkbox" id="logo-plate" role="switch"><span class="switch-track"></span><span>Background behind logo</span></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="style-row">
+            <label class="form-label" for="export-size">PNG size</label>
+            <select class="select" id="export-size">
+              <option value="256">256 px</option>
+              <option value="512">512 px</option>
+              <option value="1024">1024 px</option>
+              <option value="2048">2048 px</option>
+            </select>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer data-shell-footer></footer>
+</body>
+</html>

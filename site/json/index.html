@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>JSON Formatter &amp; Validator · Homelab Tools</title>
+  <meta name="description" content="Validate, pretty-print and minify JSON with exact line and column errors, duplicate-key and big-number warnings. Runs in your browser.">
+  <meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/theme.css">
+  <script src="/assets/theme-init.js"></script>
+  <script type="module" src="/assets/shell.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body data-tool="json">
+  <header data-shell-header></header>
+
+  <main class="page container">
+    <nav class="crumbs" aria-label="Breadcrumb" data-crumbs></nav>
+    <div class="tool-head">
+      <span data-tool-icon></span>
+      <div>
+        <h1>JSON Formatter &amp; Validator</h1>
+        <p class="lede">Strict RFC 8259 validation with exact error locations. Formatting keeps numbers and strings exactly as written, so big integers aren’t rounded.</p>
+      </div>
+    </div>
+
+    <section class="panel">
+      <div class="panel-bar">
+        <div class="segmented" role="radiogroup" aria-label="Output style">
+          <label><input type="radio" name="style" value="pretty" checked><span>Format</span></label>
+          <label><input type="radio" name="style" value="minify"><span>Minify</span></label>
+        </div>
+        <div class="options">
+          <label class="inline-field" id="indent-field">Indent
+            <select class="select" id="indent">
+              <option value="2">2 spaces</option>
+              <option value="4">4 spaces</option>
+              <option value="tab">Tabs</option>
+            </select>
+          </label>
+          <label class="switch"><input type="checkbox" id="opt-sort" role="switch"><span class="switch-track"></span><span>Sort keys</span></label>
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <div class="split">
+          <div class="field" id="input-field">
+            <div class="field-head">
+              <label class="field-label" for="input">Input</label>
+              <button class="btn btn-ghost" type="button" id="open-file"><span data-icon="upload"></span>Open</button>
+              <button class="btn btn-ghost" type="button" id="sample">Sample</button>
+              <button class="btn btn-ghost btn-icon" type="button" id="clear" aria-label="Clear input" title="Clear"><span data-icon="trash"></span></button>
+            </div>
+            <textarea id="input" class="textarea" spellcheck="false" autocapitalize="off" autocomplete="off"
+              placeholder="Paste JSON here, or drop a .json file…"></textarea>
+            <input type="file" id="file" accept=".json,application/json,text/plain" hidden>
+          </div>
+          <div class="split-mid">
+            <button class="btn btn-round" type="button" id="apply" aria-label="Replace input with output" title="Replace input with output"><span data-icon="swap"></span></button>
+          </div>
+          <div class="field">
+            <div class="field-head">
+              <label class="field-label" for="output">Output</label>
+              <button class="btn btn-ghost" type="button" id="download"><span data-icon="download"></span>Download</button>
+              <button class="btn" type="button" id="copy"><span data-icon="copy"></span>Copy</button>
+            </div>
+            <textarea id="output" class="textarea" readonly spellcheck="false" placeholder="Formatted JSON appears here."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body messages" id="messages" aria-live="polite"></div>
+      <div class="status" id="status"></div>
+    </section>
+  </main>
+
+  <footer data-shell-footer></footer>
+</body>
+</html>
