@@ -5,7 +5,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, extname } from 'node:path';
-import { CSP, STRICT_CSP, STRICT_PAGES, VIA_CSP, VIA_PATH } from '../scripts/security.mjs';
+import { CSP, STRICT_CSP, STRICT_PAGES, DNS_CSP, DNS_PAGES, DNS_FETCH_FILE, VIA_CSP, VIA_PATH } from '../scripts/security.mjs';
 
 const ROOT = new URL('../site/', import.meta.url).pathname;
 
@@ -63,7 +63,8 @@ test('every HTML page declares a same-origin-only Content-Security-Policy', () =
     const html = readFileSync(f, 'utf8');
     const csp = /<meta http-equiv="Content-Security-Policy" content="([^"]+)"/.exec(html)?.[1];
     assert.ok(csp, `${rel(f)} has no CSP meta tag`);
-    const expected = isVia(f) ? VIA_CSP : STRICT_PAGES.includes(rel(f)) ? STRICT_CSP : CSP;
+    const isDns = DNS_PAGES.includes(rel(f));
+    const expected = isVia(f) ? VIA_CSP : STRICT_PAGES.includes(rel(f)) ? STRICT_CSP : isDns ? DNS_CSP : CSP;
     assert.equal(csp, expected, `${rel(f)} CSP differs from scripts/security.mjs`);
     const required = ["default-src 'self'", "script-src 'self'", "style-src 'self'", "font-src 'self'",
       expected === STRICT_CSP ? "connect-src 'none'" : "connect-src 'self'"];
@@ -71,7 +72,10 @@ test('every HTML page declares a same-origin-only Content-Security-Policy', () =
     for (const d of required) {
       assert.ok(csp.includes(d), `${rel(f)} CSP is missing ${d}`);
     }
-    assert.ok(!/https?:|\*/.test(csp), `${rel(f)} CSP allows an external origin or wildcard`);
+    // The DNS page may connect to any resolver; nothing else may name an
+    // outside origin, and no page may load code or styles from one.
+    const rest = isDns ? csp.replace("connect-src 'self' https: http:", '') : csp;
+    assert.ok(!/https?:|\*/.test(rest), `${rel(f)} CSP allows an external origin or wildcard`);
   }
 });
 
@@ -96,7 +100,7 @@ test('no CSS loads remote fonts, images or stylesheets', () => {
 test('no JavaScript makes network requests or imports remote modules', () => {
   for (const f of files.filter((x) => /\.m?js$/.test(x))) {
     const code = stripJsComments(readFileSync(f, 'utf8'));
-    if (!isVia(f)) for (const re of NETWORK_APIS) assert.ok(!re.test(code), `${rel(f)} uses ${re}`);
+    if (!isVia(f) && rel(f) !== DNS_FETCH_FILE) for (const re of NETWORK_APIS) assert.ok(!re.test(code), `${rel(f)} uses ${re}`);
     for (const m of code.matchAll(/(?:\bimport\s*(?:[\w*{}\s,]+from\s*)?|\bimport\s*\(\s*|new\s+(?:Worker|SharedWorker)\s*\(\s*)["'`]([^"'`]+)["'`]/g)) {
       assert.ok(!EXTERNAL.test(m[1]), `${rel(f)} imports ${m[1]}`);
     }

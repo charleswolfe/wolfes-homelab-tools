@@ -115,14 +115,53 @@ console.log('bundled Draco decoder');
 
 // 7. Theme: light/dark follows the site's own toggle (header bar, see
 // site/via/skin.css), so VIA's separate Light Mode switch goes. New users get
-// keycaps in the site's colours; any keycap theme can still be picked.
+// the GAMER keycap theme (black caps, RGB backlight; effects in skin.css).
+// HOMELAB is a retro platinum look after Apple's Extended Keyboard II; any
+// keycap theme can still be picked. Themes may also set
+// their own case colours (upstream always paints the case in the accent-key
+// colour, which would make a beige case swallow beige accent keys).
 patch('src/components/panes/settings.tsx', [
   ["            <ControlRow>\n              <Label>{t('Light Mode')}</Label>\n              <Detail>\n                <AccentSlider\n                  onChange={() => dispatch(toggleThemeMode())}\n                  isChecked={themeMode === 'light'}\n                />\n              </Detail>\n            </ControlRow>\n", ''],
 ]);
 patch('src/utils/themes.ts', [
-  ['  ...{\n    OLIVIA_DARK: {', "  ...{\n    HOMELAB: {\n      alpha: {c: '#f1efe8', t: '#1b1a17'},\n      mod: {c: '#cdc9bc', t: '#1b1a17'},\n      accent: {c: '#1f6f5c', t: '#ffffff'},\n    },\n    OLIVIA_DARK: {"],
+  ['  accent: KeyColorPair;\n};', '  accent: KeyColorPair;\n  case?: {outer: string; well: string};\n  fx?: string;\n};'],
+  ['  ...{\n    OLIVIA_DARK: {', "  ...{\n    HOMELAB: {\n      alpha: {c: '#ece8dc', t: '#46433c'},\n      mod: {c: '#cdc6b5', t: '#46433c'},\n      accent: {c: '#b5ae9c', t: '#2b2924'},\n      case: {outer: '#dcd6c8', well: 'linear-gradient(180deg, #a49e8e, #8f897a)'},\n    },\n    GAMER: {\n      alpha: {c: '#1d1f1b', t: '#5effd6'},\n      mod: {c: '#171916', t: '#5effd6'},\n      accent: {c: '#262922', t: '#5effd6'},\n      case: {outer: '#121411', well: '#070806'},\n      fx: 'rgb',\n    },\n    OLIVIA_DARK: {"],
 ]);
-patch('src/utils/device-store.ts', [["    themeName: 'OLIVIA_DARK',", "    themeName: 'HOMELAB',"]]);
+// A saved theme always beats the default, so browsers that used VIA before
+// would never see a new default. Apply each new site default once, recorded
+// in hlt:via-theme-default; a theme picked after that is kept.
+patch('src/utils/device-store.ts', [
+  ["    themeName: 'OLIVIA_DARK',", "    themeName: 'GAMER',"],
+  ['function initDeviceStore() {\n  deviceStore = new Store(defaultStoreData);\n}\n\ninitDeviceStore();\n',
+    "function initDeviceStore() {\n  deviceStore = new Store(defaultStoreData);\n}\n\ninitDeviceStore();\n\nconst HLT_THEME_DEFAULT = defaultStoreData.settings.themeName;\ntry {\n  if (localStorage.getItem('hlt:via-theme-default') !== HLT_THEME_DEFAULT) {\n    deviceStore.set('settings', {...deviceStore.get('settings'), themeName: HLT_THEME_DEFAULT});\n    localStorage.setItem('hlt:via-theme-default', HLT_THEME_DEFAULT);\n  }\n} catch {\n  // storage unavailable: the default applies anyway\n}\n"],
+]);
+patch('src/components/two-string/case.tsx', [
+  // A theme's fx (GAMER: 'rgb') tags the case wrapper; the keys are its
+  // later siblings, so skin.css reaches them with .hlt-fx-rgb ~ * .hlt-cap.
+  ['    <CaseGroup>', "    <CaseGroup\n      className={\n        (theme as {fx?: string}).fx ? `hlt-fx-${(theme as {fx?: string}).fx}` : undefined\n      }\n    >"],
+  ['      <OuterCase\n', '      <OuterCase\n        className="hlt-case"\n'],
+  ['      <InnerCase\n', '      <InnerCase\n        className="hlt-case-well"\n'],
+  ['  const outsideColor = useMemo(() => theme[KeyColorType.Accent].c, [theme]);',
+    '  const caseColors = (theme as {case?: {outer: string; well: string}}).case;\n  const outsideColor = useMemo(\n    () => caseColors?.outer ?? theme[KeyColorType.Accent].c,\n    [theme],\n  );'],
+  ['        background={`linear-gradient(200deg,${stp1} 40%,${stp2},${stp3} 80%)`}',
+    '        background={\n          caseColors?.well ??\n          `linear-gradient(200deg,${stp1} 40%,${stp2},${stp3} 80%)`\n        }'],
+]);
+// Class hooks so site/via/skin.css can shade the 2D keycaps like physical
+// ones (sculpted top, skirt, shadow, press travel) over any theme's colours.
+patch('src/components/two-string/unit-key/keycap.tsx', [
+  ['        <GlowContainer\n          $selected={selected}\n',
+    "        <GlowContainer\n          className={\n            pressedState === KeycapState.Pressed ? 'hlt-cap hlt-cap-down' : 'hlt-cap'\n          }\n          $selected={selected}\n"],
+  ['            <TestOverlay\n              style={{\n                background: keycapColor,',
+    '            <TestOverlay\n              className="hlt-cap-overlay"\n              style={{\n                background: keycapColor,'],
+  ['          <CanvasContainer\n            style={{\n              borderRadius: 4,',
+    '          <CanvasContainer\n            className="hlt-cap-top"\n            style={{\n              borderRadius: 4,'],
+]);
+// The grey-and-accent gradient behind the keyboard reads as a haze over it;
+// skin.css replaces it through --via-keyboard-bg.
+patch('src/components/two-string/canvas-router.tsx', [
+  ['    `linear-gradient(30deg, rgba(150,150,150,1) 10%,${getDarkenedColor(\n      props.$color,\n    )} 50%, rgba(150,150,150,1) 90%)`};',
+    '    `var(--via-keyboard-bg, linear-gradient(30deg, rgba(150,150,150,1) 10%,${getDarkenedColor(\n      props.$color,\n    )} 50%, rgba(150,150,150,1) 90%))`};'],
+]);
 
 // Routing: VIA expects to live at the site root (/settings, /test…). Hash
 // routes (/via/app/#/settings) keep every tab under /via/app/ and survive a

@@ -14,7 +14,7 @@
 | `SITE_URL` | build arg | Base URL for `sitemap.xml` / `robots.txt`. Ignored with a warning on a read-only filesystem. |
 | `LOG_LEVEL` | `warn` | `error`, `warn`, `info` (logs every request), `debug`, `trace`. |
 
-Every response carries a same-origin Content-Security-Policy, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `X-Frame-Options: SAMEORIGIN` and a restrictive `Permissions-Policy`.
+Every response carries a same-origin Content-Security-Policy (the DNS Lookup and SPF & DMARC Checker pages' also let them connect to DNS-over-HTTPS resolvers), `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `X-Frame-Options: SAMEORIGIN` and a restrictive `Permissions-Policy`.
 
 ## Image security
 

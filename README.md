@@ -6,17 +6,17 @@
 docker pull ghcr.io/charleswolfe/wolfes-homelab-tools:latest
 ```
 
-Free, open-source browser utilities for homelab and self-hosting: a QR code generator, a password generator, an IP subnet calculator, a Bitcoin paper wallet, a JSON formatter and validator, the VIA keyboard configurator, and more. Everything is static HTML and JavaScript that runs in your browser.
+Free, open-source browser utilities for homelab and self-hosting: a QR code generator, a pixel art maker, a password generator, an IP subnet calculator, a DNS lookup, an SPF & DMARC checker, a Bitcoin paper wallet, a JSON formatter and validator, the VIA keyboard configurator, and more. Everything is static HTML and JavaScript that runs in your browser.
 
-- **Private and offline.** Pages never contact another host: no CDNs, web fonts, analytics or trackers. A same-origin Content-Security-Policy enforces this, and the test suite fails if anything slips in.
+- **Private and offline.** Pages never contact another host: no CDNs, web fonts, analytics or trackers. A same-origin Content-Security-Policy enforces this, and the test suite fails if anything slips in. The one exception is the DNS pages (DNS Lookup, and the SPF & DMARC Checker's domain lookups), which send DNS-over-HTTPS queries to the resolver you pick, only when you click the button; their scripts and styles still come only from your server.
 - **Small.** One `scratch`-based image of about 13 MB, served by [static-web-server](https://static-web-server.net) as a non-root user, with every file pre-compressed and held in memory.
 
 | Category | Tools |
 |---|---|
-| Generate | QR Code · Password & Passphrase · UUID · Hash (SHA-256/384/512, MD5) |
-| Convert | Base64 · URL Encode/Decode · Case & Slugify · JSON ↔ YAML · Timestamp |
+| Generate | QR Code · Password & Passphrase · Pixel Art Maker · UUID · Hash (SHA-256/384/512, MD5) |
+| Convert | Image Converter (PNG, JPEG, WebP, AVIF) · Base64 · URL Encode/Decode · Case & Slugify · JSON ↔ YAML · Timestamp |
 | Inspect & Validate | JSON Formatter · JWT Decoder · Regex Tester |
-| Network | IP Subnet Calculator (IPv4 and IPv6) |
+| Network | IP Subnet Calculator (IPv4 and IPv6) · DNS Lookup (DNS-over-HTTPS, resolver comparison, DNSSEC) · SPF, DKIM & DMARC Checker |
 | Hardware & Crypto | Bitcoin Paper Wallet · VIA Keyboard Configurator |
 
 ## Screenshots
@@ -29,13 +29,13 @@ Free, open-source browser utilities for homelab and self-hosting: a QR code gene
 
 *QR Code Generator: a URL drawn with rounded modules in a custom colour. The scan check confirms the code still decodes before you download it as PNG or SVG.*
 
+![The Pixel Art Maker with the Homelab Tools logo drawn as 32×32 pixel art on a zoomed grid](docs/screenshots/pixel-art-maker.png)
+
+*Pixel Art Maker: the site's logo redrawn as 32×32 pixel art, zoomed with the pixel grid on. Pencil, line and eraser tools, the classic 16-colour palette, and a BMP download.*
+
 ![The JSON Formatter in dark mode, pretty-printing a minified compose-style JSON object](docs/screenshots/json-formatter.png)
 
 *JSON Formatter, in dark mode: minified JSON pretty-printed and validated, with key, container and size counts below.*
-
-![The Regex Tester highlighting three email addresses, with named groups and a replace preview](docs/screenshots/regex-tester.png)
-
-*Regex Tester: matches highlighted as you type, each match broken into its named groups (`user`, `domain`), and a live preview of the replacement `$<user> at $<domain>`.*
 
 ## Quick start
 

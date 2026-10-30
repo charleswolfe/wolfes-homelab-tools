@@ -4,6 +4,20 @@ Notable changes to Homelab Tools. Versions follow [Semantic Versioning](https://
 
 Each version's section becomes the notes of its GitHub release.
 
+## [Unreleased]
+
+### Added
+
+- **SPF & DMARC Checker** (Network): look up a domain's SPF, DMARC and DKIM records, or paste one to check it offline. Follows SPF includes to count the 10-DNS-lookup limit (and void lookups), flags invalid terms, `+all`/`?all`, `ptr` and duplicate records, and lists every allowed address range. Explains each DMARC tag, summarises the policy, falls back to the parent domain, and checks that outside report addresses have authorised reports. Finds DKIM keys at a given or common selectors and reports key type and size.
+- **DNS Lookup** (Network): look up A, AAAA, CNAME, MX, TXT, NS, SOA, SRV, CAA, PTR, HTTPS, DS, DNSKEY and other records over DNS-over-HTTPS, through Cloudflare, Google, Control D, your own resolver, or a `/dns-query` route on your reverse proxy. Shows DNSSEC validation and Extended DNS Errors, looks up reverse names for IP addresses, checks all common records at once, compares resolvers' answers, and gives a dig-style raw view. Queries are sent only when you click Look up.
+- **Pixel Art Maker** (Generate): a retro paint program for pixel art, with pencil, line (Shift snaps to 45°) and eraser tools, brush sizes, the classic 16-colour palette or any colour, Alt-click to pick a colour, undo/redo, zoom with a pixel grid, and keyboard shortcuts. Opens existing images and saves 24-bit BMP files; small drawings are kept across reloads.
+- **VIA keycap looks:** the 2D keyboard now has shaded, physical-looking keycaps and case; a new default **GAMER** theme (flat black caps, neon legends, RGB backlight in the site's palette) and a retro platinum **HOMELAB** theme. The grey haze behind the keyboard is gone. Browsers with an older saved keycap theme switch to the new default once.
+- **Image Converter** (Convert): convert and resize images to PNG, JPEG, WebP or AVIF (where the browser can encode it), one at a time or in batches with a zip download. Metadata such as GPS location is not carried over. Accepts PNG, JPEG, WebP, GIF, BMP, SVG, AVIF, ICO, and HEIC in browsers that can open it.
+
+### Changed
+
+- **Privacy:** DNS Lookup and the SPF & DMARC Checker are the only pages allowed to contact other hosts, and only DNS resolvers (`connect-src`), when you click the button. Scripts, styles, fonts and images on every page still load from your server alone, and the test suite still enforces that.
+
 ## [1.0.0] - 2026-10-29
 
 First release. Fifteen utilities that run entirely in the browser, packaged as one small container image.

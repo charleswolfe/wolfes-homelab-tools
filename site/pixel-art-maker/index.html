@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Pixel Art Maker · Homelab Tools</title>
+  <meta name="description" content="Free pixel art maker: a retro paint program in your browser with pencil, line and eraser tools, the classic 16-colour palette, undo and a pixel grid. Saves BMP files. No ads, no accounts, nothing uploaded, works offline.">
+  <meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/theme.css">
+  <script src="/assets/theme-init.js"></script>
+  <script type="module" src="/assets/shell.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body data-tool="pixel-art-maker">
+  <header data-shell-header></header>
+
+  <main class="page container">
+    <nav class="crumbs" aria-label="Breadcrumb" data-crumbs></nav>
+    <div class="tool-head">
+      <span data-tool-icon></span>
+      <div>
+        <h1>Pixel Art Maker</h1>
+        <p class="lede">A retro paint program for pixel art: draw pixel by pixel with a pencil, straight lines and an eraser in the classic 16 colours or any colour, then save it as a BMP. No ads, no accounts and nothing leaves your device, so it’s safe for kids too.</p>
+      </div>
+    </div>
+
+    <div class="sections">
+      <section class="panel">
+        <div class="panel-bar paint-bar">
+          <div class="segmented" role="radiogroup" aria-label="Tool">
+            <label title="Pencil (P)"><input type="radio" name="tool" value="pencil" checked><span><span data-icon="pencil"></span>Pencil</span></label>
+            <label title="Line (L)"><input type="radio" name="tool" value="line"><span><span data-icon="line"></span>Line</span></label>
+            <label title="Eraser (E)"><input type="radio" name="tool" value="eraser"><span><span data-icon="eraser"></span>Eraser</span></label>
+          </div>
+          <label class="inline-field">Size
+            <select class="select" id="size">
+              <option value="1">1 px</option><option value="2">2 px</option><option value="3">3 px</option>
+              <option value="4">4 px</option><option value="6">6 px</option><option value="8">8 px</option>
+            </select>
+          </label>
+          <label class="inline-field">Zoom
+            <select class="select" id="zoom"></select>
+          </label>
+          <span class="grow"></span>
+          <button class="btn btn-ghost btn-icon" type="button" id="grid" aria-pressed="false" aria-label="Pixel grid (G)" title="Pixel grid (G)"><span data-icon="grid"></span></button>
+          <button class="btn btn-ghost btn-icon" type="button" id="undo" aria-label="Undo (⌘Z)" title="Undo (⌘Z / Ctrl+Z)"><span data-icon="undo"></span></button>
+          <button class="btn btn-ghost btn-icon" type="button" id="redo" aria-label="Redo (⇧⌘Z)" title="Redo (⇧⌘Z / Ctrl+Y)"><span data-icon="redo"></span></button>
+        </div>
+
+        <div class="panel-bar paint-colors">
+          <span class="paint-current" id="current" title="Current colour"></span>
+          <div class="paint-swatches" id="swatches" role="radiogroup" aria-label="Colour"></div>
+          <label class="inline-field">Custom
+            <input class="input paint-picker" type="color" id="custom" aria-label="Custom colour">
+          </label>
+        </div>
+
+        <div class="paint-stage" id="stage">
+          <div class="paint-frame" id="frame">
+            <canvas id="canvas" aria-label="Drawing"></canvas>
+            <canvas id="preview" aria-hidden="true"></canvas>
+            <div class="paint-grid" id="grid-overlay" hidden></div>
+          </div>
+        </div>
+        <div class="status" id="status" aria-live="polite"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h2>Canvas and file</h2></div>
+        <div class="panel-body stack">
+          <div class="row-flex">
+            <label class="inline-field">Size
+              <input class="input" type="number" id="width" min="1" max="1024" step="1" inputmode="numeric" aria-label="Width">
+              ×
+              <input class="input" type="number" id="height" min="1" max="1024" step="1" inputmode="numeric" aria-label="Height">
+              px
+            </label>
+            <label class="inline-field">Background
+              <input class="input paint-picker" type="color" id="background" aria-label="Background colour">
+            </label>
+            <button class="btn" type="button" id="new"><span data-icon="file"></span>New canvas</button>
+            <button class="btn" type="button" id="open"><span data-icon="upload"></span>Open image…</button>
+            <input type="file" id="file" accept="image/*" hidden>
+          </div>
+          <div class="row-flex">
+            <label class="inline-field grow">File name
+              <input class="input grow" id="filename" spellcheck="false" autocomplete="off" value="pixel-art">
+            </label>
+            <span class="hint" id="filesize"></span>
+            <button class="btn btn-primary" type="button" id="download"><span data-icon="download"></span>Download BMP</button>
+          </div>
+          <p class="hint">Tips: hold Shift with the line tool to snap to 45°, Alt-click to pick up a colour, and use P, L, E and G for pencil, line, eraser and grid. Background is the colour of the next new canvas, and the colour the eraser paints on it: BMP files have no transparency. New canvas and Open image replace the drawing (undo brings it back).</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer data-shell-footer></footer>
+</body>
+</html>

@@ -34,7 +34,7 @@ export const categories = [
     name: 'Network',
     short: 'Network',
     icon: 'globe',
-    blurb: 'Plan address ranges and pick apart network settings.',
+    blurb: 'Plan address ranges, look up DNS and check email records.',
   },
   {
     id: 'hardware',
@@ -64,6 +64,12 @@ export const tools = [
       level: 'recommended',
       reason: 'Over plain HTTP, anyone between you and this server could alter the page and see or choose the passwords it generates.',
     },
+  },
+  {
+    id: 'pixel-art-maker', path: '/pixel-art-maker/', category: 'generate', icon: 'brush', ready: true,
+    name: 'Pixel Art Maker',
+    summary: 'A retro paint program for pixel art, with pencil, line and eraser. Saves BMP files.',
+    keywords: ['pixel art', 'pixel art maker', 'paint', 'ms paint', 'draw', 'sprite', 'retro', 'bmp', 'bitmap', 'kids', 'pencil', 'icon'],
   },
   {
     id: 'uuid', path: '/uuid/', category: 'generate', icon: 'id', ready: true,
@@ -108,6 +114,12 @@ export const tools = [
     keywords: ['timestamp', 'unix', 'epoch', 'date', 'time', 'iso', '8601'],
   },
   {
+    id: 'image', path: '/image/', category: 'convert', icon: 'image', ready: true,
+    name: 'Image Converter',
+    summary: 'Convert and resize images to PNG, JPEG, WebP or AVIF, stripping metadata.',
+    keywords: ['image', 'photo', 'convert', 'resize', 'compress', 'png', 'jpeg', 'jpg', 'webp', 'avif', 'heic', 'exif', 'metadata'],
+  },
+  {
     id: 'json', path: '/json/', category: 'inspect', icon: 'braces', ready: true,
     name: 'JSON Formatter',
     summary: 'Validate, pretty-print and minify JSON with exact error locations.',
@@ -130,6 +142,18 @@ export const tools = [
     name: 'IP Subnet Calculator',
     summary: 'IPv4 and IPv6 CIDR ranges, netmasks, usable hosts and subnet splitting.',
     keywords: ['ip', 'subnet', 'cidr', 'netmask', 'mask', 'ipv4', 'ipv6', 'network', 'wildcard', 'broadcast', 'prefix', 'vlan', 'range'],
+  },
+  {
+    id: 'dns', path: '/dns/', category: 'network', icon: 'dns', ready: true,
+    name: 'DNS Lookup',
+    summary: 'Query A, MX, TXT, CAA, DNSSEC and other records over DNS-over-HTTPS, and compare resolvers.',
+    keywords: ['dns', 'lookup', 'nslookup', 'dig', 'doh', 'resolver', 'mx', 'txt', 'cname', 'ns', 'soa', 'caa', 'ptr', 'reverse', 'dnssec', 'propagation', 'spf', 'dmarc'],
+  },
+  {
+    id: 'spf-dmarc', path: '/spf-dmarc/', category: 'network', icon: 'mailcheck', ready: true,
+    name: 'SPF & DMARC Checker',
+    summary: 'Check a domain’s SPF lookup count, DMARC policy and DKIM keys, or validate a pasted record.',
+    keywords: ['spf', 'dmarc', 'dkim', 'email', 'mail', 'record', 'checker', 'validator', 'txt', 'deliverability', 'spoofing', 'domainkey', 'lookup limit'],
   },
   {
     id: 'bitcoin-wallet', path: '/bitcoin-wallet/', category: 'hardware', icon: 'wallet', ready: true,

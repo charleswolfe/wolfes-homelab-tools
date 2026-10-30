@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https: http:; worker-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>DNS Lookup · Homelab Tools</title>
+  <meta name="description" content="DNS lookup over DNS-over-HTTPS: A, AAAA, MX, TXT, NS, SOA, CAA, SRV, PTR and DNSSEC records from Cloudflare, Google, Control D or your own resolver, with a resolver comparison.">
+  <meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/theme.css">
+  <script src="/assets/theme-init.js"></script>
+  <script type="module" src="/assets/shell.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body data-tool="dns">
+  <header data-shell-header></header>
+
+  <main class="page container">
+    <nav class="crumbs" aria-label="Breadcrumb" data-crumbs></nav>
+    <div class="tool-head">
+      <span data-tool-icon></span>
+      <div>
+        <h1>DNS Lookup</h1>
+        <p class="lede">Look up a domain’s records, or an IP address’s reverse name, through a public DNS-over-HTTPS resolver or your own. Compare resolvers to check whether a change has spread.</p>
+      </div>
+    </div>
+
+    <div class="sections">
+      <section class="panel">
+        <form class="panel-body stack" id="form" novalidate>
+          <div class="dns-query">
+            <label class="visually-hidden" for="name">Domain name or IP address</label>
+            <input class="input input-mono input-lg" id="name" spellcheck="false" autocomplete="off" autocapitalize="off"
+              placeholder="example.com, _sip._tcp.example.com or 192.0.2.1">
+            <label class="visually-hidden" for="type">Record type</label>
+            <select class="select dns-type" id="type"></select>
+            <button class="btn btn-primary btn-lg" type="submit" id="go"><span data-icon="search"></span>Look up</button>
+          </div>
+          <div class="row-flex">
+            <label class="inline-field grow">Resolver
+              <select class="select" id="resolver"></select>
+            </label>
+            <label class="switch"><input type="checkbox" id="compare" role="switch"><span class="switch-track"></span><span>Compare all resolvers</span></label>
+            <label class="switch"><input type="checkbox" id="dnssec" role="switch"><span class="switch-track"></span><span>Show DNSSEC records</span></label>
+            <label class="switch" title="Ask the resolver to skip DNSSEC validation (the CD bit), to see answers it would otherwise reject"><input type="checkbox" id="cd" role="switch"><span class="switch-track"></span><span>Skip validation</span></label>
+          </div>
+          <div class="row-flex" id="custom-field" hidden>
+            <label class="inline-field grow">DoH URL
+              <input class="input input-mono" id="custom" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="https://dns.home.lan/dns-query">
+            </label>
+          </div>
+          <div class="recent" id="recent" hidden></div>
+        </form>
+        <div class="panel-body messages" id="messages"></div>
+        <div class="panel-body hint dns-privacy" id="privacy"></div>
+      </section>
+
+      <div id="results" class="sections"></div>
+
+      <section class="panel">
+        <details class="cheatsheet">
+          <summary><span data-icon="chevronRight"></span>Using your own resolver</summary>
+          <div class="panel-body prose">
+            <p>Lookups run in your browser as DNS-over-HTTPS (RFC 8484) GET requests, so a resolver works here only if it serves DoH and allows requests from web pages (it must send an <code>Access-Control-Allow-Origin</code> header). Cloudflare, Google and Control D do; many others, including AdGuard DNS, Mullvad, OpenDNS and NextDNS, don’t. Quad9 does only over HTTP/2, so it fails as soon as the browser switches to HTTP/3.</p>
+            <p><strong>Same-origin route.</strong> Choose “This server, /dns-query” and have the reverse proxy in front of Homelab Tools forward that path to your resolver’s DoH endpoint. The browser then sees a same-origin request, so CORS doesn’t apply. With Caddy:</p>
+            <pre class="code-block">tools.home.lan {
+	handle /dns-query {
+		reverse_proxy https://adguard.home.lan {
+			header_up Host {upstream_hostport}
+		}
+	}
+	reverse_proxy homelab-tools:8080
+}</pre>
+            <p><strong>Pi-hole</strong> has no DoH server of its own; run a DoH server in front of it and route to that. <strong>AdGuard Home</strong> and <strong>Technitium</strong> serve DoH at <code>/dns-query</code> once encryption is enabled.</p>
+            <p><strong>Plain HTTP.</strong> When this site is served over HTTPS, browsers block requests to <code>http://</code> resolvers.</p>
+          </div>
+        </details>
+        <details class="cheatsheet">
+          <summary><span data-icon="chevronRight"></span>Response codes and flags</summary>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>Code</th><th>Meaning</th></tr></thead>
+              <tbody id="ref-rows"></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+    </div>
+  </main>
+
+  <footer data-shell-footer></footer>
+</body>
+</html>

@@ -53,6 +53,17 @@ export const STRICT_CSP = CSP
 // Pages that must use STRICT_CSP (paths relative to site/).
 export const STRICT_PAGES = ['bitcoin-wallet/index.html', 'password/index.html'];
 
+// The DNS pages are the one exception to "never contact another host": DNS
+// Lookup and the SPF & DMARC Checker send DNS-over-HTTPS queries, when the
+// user clicks the button, to public resolvers or one the user enters. Only connect-src opens up; scripts,
+// styles, fonts and images still load from this server alone. http: is for
+// a resolver on the LAN when the site itself is served over plain HTTP.
+export const DNS_CSP = CSP.replace("connect-src 'self'", "connect-src 'self' https: http:");
+export const DNS_PAGES = ['dns/index.html', 'spf-dmarc/index.html'];
+// The only file allowed to call fetch() outside the vendored VIA app; both
+// DNS pages import it.
+export const DNS_FETCH_FILE = 'dns/resolve.js';
+
 // The vendored VIA app (site/via/app/). Still same-origin only, with the
 // relaxations it can't run without:
 //   - 'unsafe-eval': its definition validator (ajv, inside @the-via/reader)

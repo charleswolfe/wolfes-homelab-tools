@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https: http:; worker-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>SPF &amp; DMARC Checker · Homelab Tools</title>
+  <meta name="description" content="Check a domain’s SPF, DMARC and DKIM records: the SPF 10-lookup limit across includes, DMARC policy and reporting, DKIM key size. Or paste a record to validate it offline.">
+  <meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/theme.css">
+  <script src="/assets/theme-init.js"></script>
+  <script type="module" src="/assets/shell.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body data-tool="spf-dmarc">
+  <header data-shell-header></header>
+
+  <main class="page container">
+    <nav class="crumbs" aria-label="Breadcrumb" data-crumbs></nav>
+    <div class="tool-head">
+      <span data-tool-icon></span>
+      <div>
+        <h1>SPF &amp; DMARC Checker</h1>
+        <p class="lede">Check the records that stop others sending mail as your domain: SPF (which servers may send), DMARC (what receivers do with failures) and DKIM (signing keys). Look up a domain, or paste a record to check it without any network access.</p>
+      </div>
+    </div>
+
+    <div class="sections">
+      <section class="panel">
+        <div class="panel-bar">
+          <div class="segmented" role="radiogroup" aria-label="Mode">
+            <label><input type="radio" name="mode" value="lookup" checked><span>Look up a domain</span></label>
+            <label><input type="radio" name="mode" value="paste"><span>Paste a record</span></label>
+          </div>
+        </div>
+
+        <form class="panel-body stack" id="lookup-form" novalidate>
+          <div class="ea-query">
+            <label class="visually-hidden" for="domain">Domain</label>
+            <input class="input input-mono input-lg" id="domain" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="example.com">
+            <button class="btn btn-primary btn-lg" type="submit" id="go"><span data-icon="shield"></span>Check</button>
+          </div>
+          <div class="row-flex">
+            <label class="inline-field grow">DKIM selector
+              <input class="input input-mono" id="selector" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="optional">
+            </label>
+            <label class="inline-field grow">Resolver
+              <select class="select" id="resolver"></select>
+            </label>
+          </div>
+          <div class="row-flex" id="custom-field" hidden>
+            <label class="inline-field grow">DoH URL
+              <input class="input input-mono" id="custom" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="https://dns.home.lan/dns-query">
+            </label>
+          </div>
+        </form>
+
+        <div class="panel-body stack" id="paste-form" hidden>
+          <label class="visually-hidden" for="record">SPF, DMARC or DKIM record</label>
+          <textarea class="textarea input-mono ea-record" id="record" spellcheck="false" autocomplete="off" autocapitalize="off"
+            placeholder="v=spf1 include:_spf.google.com ~all&#10;v=DMARC1; p=reject; rua=mailto:dmarc@example.com&#10;v=DKIM1; k=rsa; p=MIIBIjANBgkqh…"></textarea>
+          <div class="row-flex">
+            <span class="hint" id="detected"></span>
+          </div>
+        </div>
+
+        <div class="panel-body messages" id="messages"></div>
+        <div class="panel-body hint dns-privacy" id="privacy"></div>
+      </section>
+
+      <div id="results" class="sections"></div>
+
+      <section class="panel">
+        <details class="cheatsheet">
+          <summary><span data-icon="chevronRight"></span>How SPF, DKIM and DMARC fit together</summary>
+          <div class="panel-body prose">
+            <p><strong>SPF</strong> is a TXT record on your domain listing the servers allowed to send its mail. Receivers check the server that connected against it. Each <code>include:</code>, <code>a</code>, <code>mx</code>, <code>ptr</code>, <code>exists</code> and <code>redirect=</code> costs a DNS lookup, including the ones inside includes, and more than 10 makes SPF fail for all your mail.</p>
+            <p><strong>DKIM</strong> signs each message; the public key is a TXT record at <code>selector._domainkey.example.com</code>. Selectors can’t be listed, so this page tries common ones. The real one is the <code>s=</code> value in a message’s <code>DKIM-Signature</code> header.</p>
+            <p><strong>DMARC</strong> (a TXT record at <code>_dmarc.example.com</code>) tells receivers what to do when a message passes neither SPF nor DKIM for the domain in its From: address, and where to send reports. Start with <code>p=none</code> and a <code>rua=</code> address, read the reports until all your real senders pass, then move to <code>quarantine</code> and <code>reject</code>.</p>
+            <p>Subdomains without their own <code>_dmarc</code> record use the parent’s. This page finds the parent by removing labels down to two, without the Public Suffix List, so for names under suffixes like <code>co.uk</code> it can look one level too high.</p>
+          </div>
+        </details>
+      </section>
+    </div>
+  </main>
+
+  <footer data-shell-footer></footer>
+</body>
+</html>

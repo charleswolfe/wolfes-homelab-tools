@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Image Converter · Homelab Tools</title>
+  <meta name="description" content="Convert images to PNG, JPEG, WebP or AVIF and resize them in your browser, in batches, with metadata such as GPS location removed. Nothing is uploaded.">
+  <meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/theme.css">
+  <script src="/assets/theme-init.js"></script>
+  <script type="module" src="/assets/shell.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body data-tool="image">
+  <header data-shell-header></header>
+
+  <main class="page container">
+    <nav class="crumbs" aria-label="Breadcrumb" data-crumbs></nav>
+    <div class="tool-head">
+      <span data-tool-icon></span>
+      <div>
+        <h1>Image Converter</h1>
+        <p class="lede">Convert and resize images, one or many at a time. Everything happens in your browser; the files never leave your device, and metadata such as GPS location and camera details is left out of the result.</p>
+      </div>
+    </div>
+
+    <div class="sections">
+      <section class="panel">
+        <div class="panel-body" id="drop-zone">
+          <div class="file-card" id="drop">
+            <span class="file-card-icon"><span data-icon="image"></span></span>
+            <span class="file-card-name">Drop images here</span>
+            <span class="file-card-meta">or paste, or choose from your device. PNG, JPEG, WebP, GIF, BMP, SVG, AVIF, ICO, and HEIC where the browser supports it.</span>
+            <button class="btn btn-primary" type="button" id="choose"><span data-icon="upload"></span>Choose images</button>
+          </div>
+          <input type="file" id="file" accept="image/*,.heic,.heif,.avif,.svg" multiple hidden>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h2>Output</h2></div>
+        <div class="panel-body stack">
+          <div class="row-flex">
+            <div class="segmented" role="radiogroup" aria-label="Output format" id="formats"></div>
+          </div>
+          <div class="range" id="quality-field">
+            <label class="hint img-label" for="quality">Quality</label>
+            <input type="range" id="quality" min="1" max="100" step="1">
+            <output id="quality-out" for="quality"></output>
+          </div>
+          <div class="row-flex">
+            <label class="inline-field">Size
+              <select class="select" id="resize">
+                <option value="original">Original</option>
+                <option value="scale">Scale by %</option>
+                <option value="fit">Fit within</option>
+              </select>
+            </label>
+            <label class="inline-field" id="scale-field" hidden>
+              <input class="input" type="number" id="scale" min="1" max="400" step="1" inputmode="numeric" aria-label="Scale percent">%
+            </label>
+            <span class="inline-field" id="fit-field" hidden>
+              <input class="input" type="number" id="max-width" min="0" step="1" inputmode="numeric" aria-label="Maximum width" placeholder="width">
+              ×
+              <input class="input" type="number" id="max-height" min="0" step="1" inputmode="numeric" aria-label="Maximum height" placeholder="height">
+              px
+            </span>
+            <label class="inline-field" id="bg-field">Background
+              <input class="input img-color" type="color" id="bg" aria-label="Background colour for transparent areas">
+            </label>
+          </div>
+          <span class="hint" id="options-hint"></span>
+        </div>
+      </section>
+
+      <section class="panel" id="results-panel" hidden>
+        <div class="panel-head">
+          <h2>Images</h2>
+          <span class="hint" id="totals"></span>
+          <button class="btn btn-ghost" type="button" id="clear"><span data-icon="trash"></span>Clear</button>
+          <button class="btn btn-primary" type="button" id="download-all"><span data-icon="download"></span>Download all</button>
+        </div>
+        <ul class="img-list" id="results"></ul>
+      </section>
+    </div>
+  </main>
+
+  <footer data-shell-footer></footer>
+</body>
+</html>
