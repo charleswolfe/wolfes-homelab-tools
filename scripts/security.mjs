@@ -34,6 +34,12 @@ export const COMMON_HEADERS = {
   'Cache-Control': 'no-cache',
 };
 
+// The favicon is the one file other sites may embed, and only sibling
+// subdomains of the same site (a dashboard at home.example.com showing
+// tools.example.com's icon). Everything else stays same-origin.
+export const FAVICON_PATH = 'favicon.svg';
+export const FAVICON_CORP = 'same-site';
+
 // static-web-server forces "max-age=63072000; includeSubDomains; preload"
 // whenever TLS is on. We always override it: a year without preload when HSTS
 // is opted into, otherwise max-age=0, which tells browsers not to pin HTTPS.

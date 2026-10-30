@@ -4,6 +4,12 @@ Notable changes to Homelab Tools. Versions follow [Semantic Versioning](https://
 
 Each version's section becomes the notes of its GitHub release.
 
+## [Unreleased]
+
+### Changed
+
+- **Favicon embedding:** `/favicon.svg` is now served with `Cross-Origin-Resource-Policy: same-site` instead of `same-origin`, so dashboards on a sibling subdomain (for example Homepage at `home.example.com`) can show it as the Homelab Tools icon. Every other file stays same-origin.
+
 ## [1.0.1] - 2026-10-30
 
 ### Added

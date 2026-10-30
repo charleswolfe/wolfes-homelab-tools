@@ -10,7 +10,7 @@ import { cpSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFi
 import { join, extname, relative } from 'node:path';
 import { brotliCompressSync, gzipSync, constants as zlib } from 'node:zlib';
 import { tools } from '../site/assets/tools.js';
-import { COMMON_HEADERS, HSTS_ON, HSTS_OFF, STRICT_CSP, STRICT_PAGES, DNS_CSP, DNS_PAGES, VIA_CSP, VIA_PATH } from './security.mjs';
+import { COMMON_HEADERS, HSTS_ON, HSTS_OFF, STRICT_CSP, STRICT_PAGES, DNS_CSP, DNS_PAGES, VIA_CSP, VIA_PATH, FAVICON_PATH, FAVICON_CORP } from './security.mjs';
 
 const MiB = 1024 * 1024;
 const CACHE_CAP = 50 * MiB;          // spec: cap the cache at 50 MB
@@ -95,7 +95,8 @@ directory-listing = false
 ${headerRule('**', headers)}
 ${STRICT_PAGES.map((p) => headerRule(`/${p.replace(/index\.html$/, '')}**`, { 'Content-Security-Policy': `${STRICT_CSP}; frame-ancestors 'self'` })).join('\n')}
 ${DNS_PAGES.map((p) => headerRule(`/${p.replace(/index\.html$/, '')}**`, { 'Content-Security-Policy': `${DNS_CSP}; frame-ancestors 'self'` })).join('\n')}
-${headerRule(`/${VIA_PATH}**`, { 'Content-Security-Policy': `${VIA_CSP}; frame-ancestors 'self'` })}`;
+${headerRule(`/${VIA_PATH}**`, { 'Content-Security-Policy': `${VIA_CSP}; frame-ancestors 'self'` })}
+${headerRule(`/${FAVICON_PATH}`, { 'Cross-Origin-Resource-Policy': FAVICON_CORP })}`;
 writeFileSync(join(etcOut, 'sws-http.toml'), toml(COMMON_HEADERS));
 writeFileSync(join(etcOut, 'sws-https-hsts.toml'), toml({ ...COMMON_HEADERS, 'Strict-Transport-Security': HSTS_ON }));
 writeFileSync(join(etcOut, 'sws-https.toml'), toml({ ...COMMON_HEADERS, 'Strict-Transport-Security': HSTS_OFF }));

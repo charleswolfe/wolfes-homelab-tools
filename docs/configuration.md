@@ -14,7 +14,7 @@
 | `SITE_URL` | build arg | Base URL for `sitemap.xml` / `robots.txt`. Ignored with a warning on a read-only filesystem. |
 | `LOG_LEVEL` | `warn` | `error`, `warn`, `info` (logs every request), `debug`, `trace`. |
 
-Every response carries a same-origin Content-Security-Policy (the DNS Lookup and SPF & DMARC Checker pages' also let them connect to DNS-over-HTTPS resolvers), `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `X-Frame-Options: SAMEORIGIN` and a restrictive `Permissions-Policy`.
+Every response carries a same-origin Content-Security-Policy (the DNS Lookup and SPF & DMARC Checker pages' also let them connect to DNS-over-HTTPS resolvers), `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `X-Frame-Options: SAMEORIGIN` and a restrictive `Permissions-Policy`. Files may only be embedded by this site (`Cross-Origin-Resource-Policy: same-origin`), except `/favicon.svg`, which sibling subdomains may also load (`same-site`), so a dashboard such as `home.example.com` can show it as the Homelab Tools icon.
 
 ## Image security
 
