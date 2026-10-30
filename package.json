@@ -1,6 +1,6 @@
 {
   "name": "wolfes-homelab-tools",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "description": "Static, offline-capable browser utilities for homelab and self-hosting.",

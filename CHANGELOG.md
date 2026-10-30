@@ -4,7 +4,7 @@ Notable changes to Homelab Tools. Versions follow [Semantic Versioning](https://
 
 Each version's section becomes the notes of its GitHub release.
 
-## [Unreleased]
+## [1.0.1] - 2026-10-30
 
 ### Added
 
