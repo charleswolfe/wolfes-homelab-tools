@@ -1,5 +1,11 @@
 # wolfes-homelab-tools
 
+[![Tests](https://github.com/charleswolfe/wolfes-homelab-tools/actions/workflows/test.yml/badge.svg)](https://github.com/charleswolfe/wolfes-homelab-tools/actions/workflows/test.yml)
+[![Docker image](https://github.com/charleswolfe/wolfes-homelab-tools/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/charleswolfe/wolfes-homelab-tools/actions/workflows/docker-publish.yml)
+[![Release](https://img.shields.io/github/v/release/charleswolfe/wolfes-homelab-tools)](https://github.com/charleswolfe/wolfes-homelab-tools/releases)
+[![License](https://img.shields.io/badge/license-MIT%20%2B%20Commons%20Clause-blue)](LICENSE)
+![Platforms](https://img.shields.io/badge/platforms-amd64%20%7C%20arm64%20%7C%20arm%2Fv7-informational)
+
 **Docker image:** [`ghcr.io/charleswolfe/wolfes-homelab-tools`](https://github.com/charleswolfe/wolfes-homelab-tools/pkgs/container/wolfes-homelab-tools) for `amd64`, `arm64` and `arm/v7` (Raspberry Pi)
 
 ```sh
