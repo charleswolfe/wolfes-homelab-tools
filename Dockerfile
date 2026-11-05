@@ -14,14 +14,14 @@
 # busybox reference appears twice; keep both the same.
 
 # ---------- target-platform binaries ----------
-FROM busybox:1.37.0-musl@sha256:8fddc201ee902ceabe7f766612d597201b70592e95451c9410f446440ef4786f AS busybox
+FROM busybox:1.38.0-musl@sha256:80e38f9a1b39188b8bdb28879178edb322a4402b081a9aedda1924609decd6f6 AS busybox
 FROM joseluisq/static-web-server:2.44.1@sha256:94618e3d17802265a21926217e6f9e7832b311b6fbf5933684001739fafed06a AS sws
 
 # ---------- build-platform stages (output is the same for every platform) ----------
 # Only the busybox applets the entrypoint and health check use, as symlinks.
 # Made here rather than with RUN in the final stage, so multi-platform builds
 # need no CPU emulation.
-FROM --platform=$BUILDPLATFORM busybox:1.37.0-musl@sha256:8fddc201ee902ceabe7f766612d597201b70592e95451c9410f446440ef4786f AS applets
+FROM --platform=$BUILDPLATFORM busybox:1.38.0-musl@sha256:80e38f9a1b39188b8bdb28879178edb322a4402b081a9aedda1924609decd6f6 AS applets
 RUN mkdir /applets && for a in sh cat find grep id ls nc sed tr wget; do ln -s busybox "/applets/$a"; done
 
 # Pre-compress site/ (brotli + gzip), write sitemap, headers and build.env.
