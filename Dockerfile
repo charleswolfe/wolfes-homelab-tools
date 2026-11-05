@@ -25,7 +25,7 @@ FROM --platform=$BUILDPLATFORM busybox:1.37.0-musl@sha256:8fddc201ee902ceabe7f76
 RUN mkdir /applets && for a in sh cat find grep id ls nc sed tr wget; do ln -s busybox "/applets/$a"; done
 
 # Pre-compress site/ (brotli + gzip), write sitemap, headers and build.env.
-FROM --platform=$BUILDPLATFORM node:24.22.2-alpine3.24@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85 AS build
+FROM --platform=$BUILDPLATFORM node:26.13.0-alpine3.24@sha256:c6ad9e9c1d80f6eb607c26b4b0a132ff7a2344fad1c78ea3baa2a7d4c8de6d94 AS build
 WORKDIR /app
 COPY . .
 ARG SITE_URL=http://localhost:8080
