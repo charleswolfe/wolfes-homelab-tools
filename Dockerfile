@@ -15,7 +15,7 @@
 
 # ---------- target-platform binaries ----------
 FROM busybox:1.37.0-musl@sha256:8fddc201ee902ceabe7f766612d597201b70592e95451c9410f446440ef4786f AS busybox
-FROM joseluisq/static-web-server:2.44.1@sha256:94618e3d17802265a21926217e6f9e7832b311b6fbf5933684001739fafed06a AS sws
+FROM joseluisq/static-web-server:2.44.3@sha256:ccf2d666ffe5f8ef2ec96bc40f07757605998c04b78f7d8fdb98a584dd4f5717 AS sws
 
 # ---------- build-platform stages (output is the same for every platform) ----------
 # Only the busybox applets the entrypoint and health check use, as symlinks.
